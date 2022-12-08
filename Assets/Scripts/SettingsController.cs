@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class SettingsController : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI temperaturePanelValue;
+    [SerializeField] private TextMeshProUGUI pressurePanelValue;
+    [SerializeField] private TextMeshProUGUI radiationPanelValue;
+    [SerializeField] private TextMeshProUGUI humidityPanelValue;
+    [SerializeField] private TextMeshProUGUI windSpeedPanelValue;
+    [SerializeField] private TextMeshProUGUI preciptiationPanelValue;
+    
     private TMP_InputField _temperatureValue;
     private Slider _temperatureSlider;
     private TMP_InputField _pressureValue;
@@ -47,22 +54,51 @@ public class SettingsController : MonoBehaviour
 
     public void Start()
     {
-        _temperatureValue.onValueChanged.AddListener((value) => _temperatureSlider.value = ParseFloat(value));
+        _temperatureValue.onValueChanged.AddListener((value) =>
+        {
+            _temperatureSlider.value = ParseFloat(value);
+            temperaturePanelValue.text = value;
+        });
         _temperatureSlider.onValueChanged.AddListener((value) =>
             _temperatureValue.text = value.ToString(CultureInfo.InvariantCulture));
-        _pressureValue.onValueChanged.AddListener((value) => _pressureSlider.value = ParseFloat(value));
+        
+        _pressureValue.onValueChanged.AddListener((value) =>
+        {
+            _pressureSlider.value = ParseFloat(value);
+            pressurePanelValue.text = value;
+        });
         _pressureSlider.onValueChanged.AddListener((value) =>
             _pressureValue.text = value.ToString(CultureInfo.InvariantCulture));
-        _radiationValue.onValueChanged.AddListener((value) => _radiationSlider.value = ParseFloat(value));
+        
+        _radiationValue.onValueChanged.AddListener((value) =>
+        {
+            _radiationSlider.value = ParseFloat(value);
+            radiationPanelValue.text = value;
+        });
         _radiationSlider.onValueChanged.AddListener((value) =>
             _radiationValue.text = value.ToString(CultureInfo.InvariantCulture));
-        _humidityValue.onValueChanged.AddListener((value) => _humiditySlider.value = ParseFloat(value));
+        
+        _humidityValue.onValueChanged.AddListener((value) =>
+        {
+            _humiditySlider.value = ParseFloat(value);
+            humidityPanelValue.text = value;
+        });
         _humiditySlider.onValueChanged.AddListener((value) =>
             _humidityValue.text = value.ToString(CultureInfo.InvariantCulture));
-        _windSpeedValue.onValueChanged.AddListener((value) => _windSpeedSlider.value = ParseFloat(value));
+        
+        _windSpeedValue.onValueChanged.AddListener((value) =>
+        {
+            _windSpeedSlider.value = ParseFloat(value);
+            windSpeedPanelValue.text = value;
+        });
         _windSpeedSlider.onValueChanged.AddListener((value) =>
             _windSpeedValue.text = value.ToString(CultureInfo.InvariantCulture));
-        _preciptiationValue.onValueChanged.AddListener((value) => _preciptioationSlider.value = ParseFloat(value));
+        
+        _preciptiationValue.onValueChanged.AddListener((value) =>
+        {
+            _preciptioationSlider.value = ParseFloat(value);
+            preciptiationPanelValue.text = value;
+        });
         _preciptioationSlider.onValueChanged.AddListener((value) =>
             _preciptiationValue.text = value.ToString(CultureInfo.InvariantCulture));
         
