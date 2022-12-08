@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SceneLoader : MonoBehaviour
+public class ButtonsManager : MonoBehaviour
 {
     [SerializeField] private GameObject weatherSettingsObject;
 
