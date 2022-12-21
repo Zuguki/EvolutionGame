@@ -1,4 +1,4 @@
-﻿namespace Weather.Implementation
+﻿namespace Weather
 {
     public static class Temperature
     {

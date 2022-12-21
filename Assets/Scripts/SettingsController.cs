@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Weather;
-using Weather.Implementation;
 
 public class SettingsController : MonoBehaviour
 {
@@ -49,57 +48,62 @@ public class SettingsController : MonoBehaviour
 
     public void Start()
     {
-        _temperatureValue.onValueChanged.AddListener((value) =>
-        {
-            Temperature.Value = ParseFloat(value);
-        });
+        _temperatureValue.onValueChanged.AddListener(value => Temperature.Value = ParseFloat(value));
+        _temperatureSlider.onValueChanged.AddListener(value => Temperature.Value = value);
         
-        _pressureValue.onValueChanged.AddListener((value) =>
-        {
-            _pressureSlider.value = ParseFloat(value);
-            pressurePanelValue.text = value;
-        });
-        _pressureSlider.onValueChanged.AddListener((value) =>
-            _pressureValue.text = value.ToString(CultureInfo.InvariantCulture));
+        _pressureValue.onValueChanged.AddListener(value => Pressure.Value = ParseFloat(value));
+        _pressureSlider.onValueChanged.AddListener(value => Pressure.Value = value);
         
-        _radiationValue.onValueChanged.AddListener((value) =>
-        {
-            _radiationSlider.value = ParseFloat(value);
-            radiationPanelValue.text = value;
-        });
-        _radiationSlider.onValueChanged.AddListener((value) =>
-            _radiationValue.text = value.ToString(CultureInfo.InvariantCulture));
+        _radiationValue.onValueChanged.AddListener(value => Radiation.Value = ParseFloat(value));
+        _radiationSlider.onValueChanged.AddListener(value => Radiation.Value = value);
         
-        _humidityValue.onValueChanged.AddListener((value) =>
-        {
-            _humiditySlider.value = ParseFloat(value);
-            humidityPanelValue.text = value;
-        });
-        _humiditySlider.onValueChanged.AddListener((value) =>
-            _humidityValue.text = value.ToString(CultureInfo.InvariantCulture));
+        _humidityValue.onValueChanged.AddListener(value => Humidity.Value = ParseFloat(value));
+        _humiditySlider.onValueChanged.AddListener(value => Humidity.Value = value);
         
-        _windSpeedValue.onValueChanged.AddListener((value) =>
-        {
-            _windSpeedSlider.value = ParseFloat(value);
-            windSpeedPanelValue.text = value;
-        });
-        _windSpeedSlider.onValueChanged.AddListener((value) =>
-            _windSpeedValue.text = value.ToString(CultureInfo.InvariantCulture));
+        _windSpeedValue.onValueChanged.AddListener(value => WindSpeed.Value = ParseFloat(value));
+        _windSpeedSlider.onValueChanged.AddListener(value => WindSpeed.Value = value);
         
-        _preciptiationValue.onValueChanged.AddListener((value) =>
-        {
-            _preciptioationSlider.value = ParseFloat(value);
-            preciptiationPanelValue.text = value;
-        });
-        _preciptioationSlider.onValueChanged.AddListener((value) =>
-            _preciptiationValue.text = value.ToString(CultureInfo.InvariantCulture));
+        _preciptiationValue.onValueChanged.AddListener(value => Preciptiation.Value = ParseFloat(value));
+        _preciptioationSlider.onValueChanged.AddListener(value => Preciptiation.Value = value);
         
         _resetButton.onClick.AddListener(ResetValues);
     }
 
-    private void ResetValues()
+    private void Update()
     {
-        Temperature.Value = Temperature.DefaultValue;
+        UpdateSliderValues();
+        UpdateTextValues();
+        UpdateTextPanels();
+    }
+
+    private void UpdateTextPanels()
+    {
+        temperaturePanelValue.text = Temperature.Value.ToString(CultureInfo.InvariantCulture);
+        pressurePanelValue.text = Pressure.Value.ToString(CultureInfo.InvariantCulture);
+        radiationPanelValue.text = Radiation.Value.ToString(CultureInfo.InvariantCulture);
+        humidityPanelValue.text = Humidity.Value.ToString(CultureInfo.InvariantCulture);
+        windSpeedPanelValue.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture);
+        preciptiationPanelValue.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture);
+    }
+
+    private void UpdateTextValues()
+    {
+        _temperatureValue.text = Temperature.Value.ToString(CultureInfo.InvariantCulture);
+        _pressureValue.text = Pressure.Value.ToString(CultureInfo.InvariantCulture);
+        _radiationValue.text = Radiation.Value.ToString(CultureInfo.InvariantCulture);
+        _humidityValue.text = Humidity.Value.ToString(CultureInfo.InvariantCulture);
+        _windSpeedValue.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture);
+        _preciptiationValue.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture);
+    }
+
+    private void UpdateSliderValues()
+    {
+        _temperatureSlider.value = Temperature.Value;
+        _pressureSlider.value = Pressure.Value;
+        _radiationSlider.value = Radiation.Value;
+        _humiditySlider.value = Humidity.Value;
+        _windSpeedSlider.value = WindSpeed.Value;
+        _preciptioationSlider.value = Preciptiation.Value;
     }
 
     private float ParseFloat(string value)
@@ -110,5 +114,15 @@ public class SettingsController : MonoBehaviour
         
         _temperatureValue.text = _temperatureSlider.value.ToString(CultureInfo.InvariantCulture);
         return _temperatureSlider.value;
+    }
+
+    private static void ResetValues()
+    {
+        Temperature.Value = Temperature.DefaultValue;
+        Pressure.Value = Pressure.DefaultValue;
+        Radiation.Value = Radiation.DefaultValue;
+        Humidity.Value = Humidity.DefaultValue;
+        WindSpeed.Value = WindSpeed.DefaultValue;
+        Preciptiation.Value = Preciptiation.DefaultValue;
     }
 }
