@@ -2,6 +2,8 @@ using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Weather;
+using Weather.Implementation;
 
 public class SettingsController : MonoBehaviour
 {
@@ -27,13 +29,6 @@ public class SettingsController : MonoBehaviour
 
     private Button _resetButton;
 
-    private const float TemperatureDefaultValue = 0;
-    private const float PressureDefaultValue = 760;
-    private const float RadiationDefaultValue = 0;
-    private const float HumidityDefaultValue = 60;
-    private const float WindSpeedDefaultValue = 8;
-    private const float PreciptiationDefaultValue = 1000;
-
     private void Awake()
     {
         _temperatureValue = transform.GetChild(1).GetChild(2).GetComponent<TMP_InputField>();
@@ -56,11 +51,8 @@ public class SettingsController : MonoBehaviour
     {
         _temperatureValue.onValueChanged.AddListener((value) =>
         {
-            _temperatureSlider.value = ParseFloat(value);
-            temperaturePanelValue.text = value;
+            Temperature.Value = ParseFloat(value);
         });
-        _temperatureSlider.onValueChanged.AddListener((value) =>
-            _temperatureValue.text = value.ToString(CultureInfo.InvariantCulture));
         
         _pressureValue.onValueChanged.AddListener((value) =>
         {
@@ -105,6 +97,11 @@ public class SettingsController : MonoBehaviour
         _resetButton.onClick.AddListener(ResetValues);
     }
 
+    private void ResetValues()
+    {
+        Temperature.Value = Temperature.DefaultValue;
+    }
+
     private float ParseFloat(string value)
     {
         var isFloat = float.TryParse(value, out var result);
@@ -113,15 +110,5 @@ public class SettingsController : MonoBehaviour
         
         _temperatureValue.text = _temperatureSlider.value.ToString(CultureInfo.InvariantCulture);
         return _temperatureSlider.value;
-    }
-
-    private void ResetValues()
-    {
-        _temperatureSlider.value = TemperatureDefaultValue;
-        _pressureSlider.value = PressureDefaultValue;
-        _radiationSlider.value = RadiationDefaultValue;
-        _humiditySlider.value = HumidityDefaultValue;
-        _windSpeedSlider.value = WindSpeedDefaultValue;
-        _preciptioationSlider.value = PreciptiationDefaultValue;
     }
 }
