@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Weather;
 
-public class SettingsController : MonoBehaviour
+public class WeatherSettingsController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI temperaturePanelValue;
     [SerializeField] private TextMeshProUGUI pressurePanelValue;
