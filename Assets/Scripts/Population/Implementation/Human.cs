@@ -1,5 +1,7 @@
-﻿using ComfortWeather;
+﻿using System;
+using ComfortWeather;
 using ComfortWeather.Implementation;
+using Unity.VisualScripting;
 using Weather;
 
 namespace Population.Implementation
@@ -8,24 +10,15 @@ namespace Population.Implementation
     {
         public int DaysAlive { get; set; } = 0;
         
-        public float MinBodyTemperature => 26;
         public float BodyTemperature { get; set; } = 36;
-        public float MaxBodyTemperature => 42;
-
-        public (float, float) MinArterialPressure => (80, 60);
         public (float, float) ArterialPressure { get; set; } = (120f, 80f);
-        public (float, float) MaxArterialPressure => (240, 100);
-
-        public float MinWaterInBody => 0.4f;
         public float WaterInBody { get; set; } = 0.6f;
-        public float MaxWaterInBody => 0.8f;
-        
-        public float MinRadiation { get; }
-        public float Radiation { get; set; }
-        public float MaxRadiation { get; }
+        public float BloodInBody { get; set; } = 5;
+        public float Radiation { get; set; } = 100;
 
         private const float StartBodyTemperature = 36;
         private const int IterationDays = 90;
+        private readonly (float, float) _startArterialPressure = (120f, 80f);
         private readonly IComfortWeather _comfortWeather = new HumanComfortWeather();
 
         public void UpdateParams()
@@ -33,10 +26,13 @@ namespace Population.Implementation
             UpdateTemperature();
             UpdateArterialPressure();
             UpdateWaterInBody();
+            UpdateBloodInBody();
+            UpdateRadiation();
         }
 
         public bool IsAlive =>
-            BodyTemperature is > 26 and < 42 && Radiation < 3000 && Pressure.Value is > 700 and < 800;
+            BodyTemperature is > 26 and < 42 && Radiation < 3000 && Pressure.Value is > 700 and < 800 &&
+            BloodInBody >= 3 && Radiation < 4000;
 
         private void UpdateTemperature()
         {
@@ -81,6 +77,30 @@ namespace Population.Implementation
                 WaterInBody -= .1f / IterationDays;
             if (BodyTemperature is > 36 and < 37)
                 WaterInBody = .6f;
+        }
+
+        private void UpdateBloodInBody()
+        {
+            if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) >= 20)
+                BloodInBody -= .5f / IterationDays;
+            if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) <= 10)
+                BloodInBody += .1f / IterationDays;
+            
+            if (BloodInBody >= 5f)
+                BloodInBody = 5f;
+        }
+
+        private void UpdateRadiation()
+        {
+            if (Weather.Radiation.Value < 500)
+                Radiation -= 500f / IterationDays;
+            if (Weather.Radiation.Value > 1000)
+                Radiation += 500f / IterationDays;
+
+            if (Radiation <= 0)
+                Radiation = 0;
+            if (Radiation >= 7000)
+                Radiation = 7000;
         }
     }
 }

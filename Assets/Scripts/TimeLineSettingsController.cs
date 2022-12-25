@@ -44,6 +44,8 @@ public class TimeLineSettingsController : MonoBehaviour
     {
         UpdateTextPanels();
         UpdateSliderValues();
+        if (TimeController.DaysLeft <= 0)
+            TimeController.Day = 0;
     }
 
     private void UpdateTextPanels()

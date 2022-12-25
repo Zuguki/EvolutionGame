@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class Program : MonoBehaviour
 {
-    [SerializeField] private GameObject populationObject;
+    [SerializeField] private GameObject populationPanel;
     
     private static bool _inProcess;
     private bool _needGetPopulation = true;
@@ -17,11 +17,13 @@ public class Program : MonoBehaviour
     private TextMeshProUGUI _bodyTemperature;
     private TextMeshProUGUI _arterialPressure;
     private TextMeshProUGUI _waterInBody;
+    private TextMeshProUGUI _bloodInBody;
     private TextMeshProUGUI _radiationInBody;
+    private TextMeshProUGUI _populationDays;
 
     private readonly IPopulation _population = new Human();
 
-    private bool _isCoroutineRunning = false;
+    private bool _isCoroutineRunning;
 
     private void Update()
     {
@@ -57,7 +59,9 @@ public class Program : MonoBehaviour
         _bodyTemperature.text = _population.BodyTemperature.ToString(CultureInfo.InvariantCulture);
         _arterialPressure.text = _population.ArterialPressure.ToCustomString();
         _waterInBody.text = _population.WaterInBody.ToString(CultureInfo.InvariantCulture);
+        _bloodInBody.text = _population.BloodInBody.ToString(CultureInfo.InvariantCulture);
         _radiationInBody.text = _population.Radiation.ToString(CultureInfo.InvariantCulture);
+        _populationDays.text = _population.DaysAlive.ToString(CultureInfo.InvariantCulture);
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -66,7 +70,6 @@ public class Program : MonoBehaviour
         _isCoroutineRunning = true;
         TimeController.Day += 1;
         _population.DaysAlive += 1;
-        Debug.Log($"Days Alive: {_population.DaysAlive}");
         yield return new WaitForSeconds(1);
         _isCoroutineRunning = false;
     }
@@ -74,13 +77,12 @@ public class Program : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     private void GetPopulationStats()
     {
-        _bodyTemperature = populationObject.transform.GetChild(0).GetChild(0).GetChild(1)
-            .GetComponent<TextMeshProUGUI>();
-        _arterialPressure = populationObject.transform.GetChild(0).GetChild(1).GetChild(1)
-            .GetComponent<TextMeshProUGUI>();
-        _waterInBody = populationObject.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>();
-        _radiationInBody = populationObject.transform.GetChild(0).GetChild(3).GetChild(1)
-            .GetComponent<TextMeshProUGUI>();
+        _bodyTemperature = populationPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _arterialPressure = populationPanel.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _waterInBody = populationPanel.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _bloodInBody = populationPanel.transform.GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _radiationInBody = populationPanel.transform.GetChild(4).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _populationDays = populationPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>();
 
         UpdateUIParams();
         _needGetPopulation = false;
