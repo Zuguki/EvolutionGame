@@ -4,6 +4,7 @@ namespace Population
 {
     public interface IPopulation
     {
+        public int DaysAlive { get; set; }
         public float MinBodyTemperature { get; }
         public float BodyTemperature { get; set; }
         public float MaxBodyTemperature { get; }

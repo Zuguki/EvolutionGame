@@ -8,5 +8,5 @@
     public static int Month => Day % 365;
     public static int Year => Month % 12;
 
-    public static int GetDaysLeft => DaysCount + MonthCount * 365 + YearsCount * 12 * 365 - Day;
+    public static int DaysLeft => DaysCount + MonthCount * 365 + YearsCount * 12 * 365 - Day;
 }

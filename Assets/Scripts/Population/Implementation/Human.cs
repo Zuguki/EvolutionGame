@@ -6,6 +6,7 @@ namespace Population.Implementation
 {
     public class Human : IPopulation
     {
+        public int DaysAlive { get; set; } = 0;
         
         public float MinBodyTemperature => 26;
         public float BodyTemperature { get; set; } = 36;
@@ -35,7 +36,7 @@ namespace Population.Implementation
         }
 
         public bool IsAlive =>
-            BodyTemperature is > 26 and < 42 && Radiation < 3000 && Humidity.Value is > 700 and < 800;
+            BodyTemperature is > 26 and < 42 && Radiation < 3000 && Pressure.Value is > 700 and < 800;
 
         private void UpdateTemperature()
         {
