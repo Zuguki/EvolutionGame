@@ -4,7 +4,7 @@
     {
         public float TemperatureWeather => 10;
         public float Pressure => 760;
-        public float Radiation => 1000;
+        public float Radiation => 1;
         public float Humidity => 20;
         public float WindSpeed => 5;
         public float Preciptiation => 300;

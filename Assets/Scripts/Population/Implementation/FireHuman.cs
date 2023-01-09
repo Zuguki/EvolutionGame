@@ -1,15 +1,14 @@
 ﻿using System;
 using ComfortWeather;
 using ComfortWeather.Implementation;
-using Unity.VisualScripting;
 using Weather;
 
 namespace Population.Implementation
 {
-    public class Human : IPopulation
+    public class FireHuman : IPopulation, ITryOpenPopulation
     {
         public int DaysAlive { get; set; } = 0;
-
+        
         public float BodyTemperature
         {
             get => _bodyTemperature;
@@ -17,8 +16,8 @@ namespace Population.Implementation
             {
                 _bodyTemperature = _bodyTemperature switch
                 {
-                    < 26 => 26,
-                    > 42 => 42,
+                    < 32 => 32,
+                    > 44 => 44,
                     _ => value
                 };
             }
@@ -29,16 +28,16 @@ namespace Population.Implementation
             get => _arterialPressure;
             set
             {
-                if (_arterialPressure.Item1 < 80 && _arterialPressure.Item2 < 60)
-                    _arterialPressure = (80f, 60f);
-                if (_arterialPressure.Item1 > 240 && _arterialPressure.Item2 > 100)
-                    _arterialPressure = (240f, 100f);
+                if (_arterialPressure.Item1 < 90 && _arterialPressure.Item2 < 75)
+                    _arterialPressure = (90f, 75f);
+                if (_arterialPressure.Item1 > 250 && _arterialPressure.Item2 > 105)
+                    _arterialPressure = (250f, 105f);
                 else
                     _arterialPressure = value;
             }
         }
 
-        public float WaterInBody { get; set; } = .6f;
+        public float WaterInBody { get; set; } = .45f;
 
         public float BloodInBody
         {
@@ -67,15 +66,15 @@ namespace Population.Implementation
             }
         }
 
-        private float _bodyTemperature = 36;
-        private (float, float) _arterialPressure = (120f, 80f);
+        private float _bodyTemperature = 38;
+        private (float, float) _arterialPressure = (150f, 85f);
         private float _bloodInBody = 5;
-        private float _radiation = 100;
+        private float _radiation = 200;
 
-        private const float StartBodyTemperature = 36;
+        private const float StartBodyTemperature = 38;
         private const int IterationDays = 90;
-        private readonly (float, float) _startArterialPressure = (120f, 80f);
-        private readonly IComfortWeather _comfortWeather = new HumanComfortWeather();
+        private readonly (float, float) _startArterialPressure = (150f, 85f);
+        private readonly IComfortWeather _comfortWeather = new FireHumanComfortWeather();
 
         public void UpdateParams()
         {
@@ -86,9 +85,8 @@ namespace Population.Implementation
             UpdateRadiation();
         }
 
-        // TODO: Change Pressure value
         public bool IsAlive =>
-            BodyTemperature is > 26 and < 42 && Radiation < 3000 && Pressure.Value is > 700 and < 800 &&
+            BodyTemperature is > 32 and < 44 && Radiation < 3000 && Pressure.Value is > 700 and < 800 &&
             BloodInBody >= 3 && Radiation < 4000;
 
         private void UpdateTemperature()
@@ -158,6 +156,23 @@ namespace Population.Implementation
                 Radiation = 0;
             if (Radiation >= 7000)
                 Radiation = 7000;
+        }
+
+
+        public bool TryOpen(IPopulation currentPopulation, out IPopulation population)
+        {
+            if (currentPopulation.IsAlive
+                && currentPopulation.BodyTemperature > 37.8 && currentPopulation.BodyTemperature < 38.2
+                && currentPopulation.Radiation is > 500 and < 600
+                && currentPopulation.ArterialPressure.Item1 > 150 && currentPopulation.ArterialPressure.Item2 < 170
+                && currentPopulation.ArterialPressure.Item2 > 85 && currentPopulation.ArterialPressure.Item2 < 90)
+            {
+                population = this;
+                return true;
+            }
+
+            population = null;
+            return false;
         }
     }
 }
