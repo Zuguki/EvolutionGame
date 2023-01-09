@@ -45,12 +45,12 @@ public class Program : MonoBehaviour
         if (!_population.IsAlive)
         {
             _inProcess = false;
-            Debug.Log("Популяция погибла");
+            InfoChecker.ChangeItems("Oooops...", "Популяция погибла");
         }
         else if (TimeController.DaysLeft <= 0)
         {
             _inProcess = false;
-            Debug.Log("Срок итераций подошел к концу");
+            InfoChecker.ChangeItems("Oooops...", "Срок итераций подошел к концу");
         }
     }
 
