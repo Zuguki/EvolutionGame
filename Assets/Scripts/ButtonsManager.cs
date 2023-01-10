@@ -14,9 +14,9 @@ public class ButtonsManager : MonoBehaviour
     public void ChangePopulationMenuActiveStatus()
     {
         if (populationMenu.activeSelf)
-            DrawPopulationMenu.NeedsDestroy = true;
+            DrawPopulationMenu.DestroyObjects();
         else
-            DrawPopulationMenu.NeedsDraw = true;
+            DrawPopulationMenu.DrawObjects();
         populationMenu.SetActive(!populationMenu.activeSelf);  
     } 
 
