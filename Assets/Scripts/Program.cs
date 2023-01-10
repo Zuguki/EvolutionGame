@@ -46,7 +46,7 @@ public class Program : MonoBehaviour
 
         if (Population is null)
         {
-            Debug.Log("Выберите популяцию");
+            InfoChecker.ChangeItems("Oooops...", "Сначала стоит выбрать популяцию");
             _inProcess = false;
             return;
         }
