@@ -10,6 +10,9 @@ using UnityEngine;
 
 public class Program : MonoBehaviour
 {
+    public static readonly List<IPopulation> OpenPopulations = new() {new Human()};
+    public static readonly List<IUnionPopulation> TryOpenPopulations = new() {new FireHuman()};
+    
     [SerializeField] private GameObject populationPanel;
     
     private static bool _inProcess;
@@ -23,9 +26,6 @@ public class Program : MonoBehaviour
     private TextMeshProUGUI _populationDays;
 
     private readonly IPopulation _population = new Human();
-    private readonly List<IPopulation> _openPopulations = new() {new Human()};
-    private readonly List<IUnionPopulation> _tryOpenPopulations = new() {new FireHuman()};
-
     private bool _isCoroutineRunning;
 
     private void Update()
@@ -45,12 +45,12 @@ public class Program : MonoBehaviour
 
     private void TryOpenNewPopulation()
     {
-        foreach (var tryOpenPopulation in _tryOpenPopulations.Where(population =>
-                     !_openPopulations.Contains(population))) 
+        foreach (var tryOpenPopulation in TryOpenPopulations.Where(population =>
+                     !OpenPopulations.Contains(population))) 
         {
             if (tryOpenPopulation.TryOpen(_population, out var population))
             {
-                _openPopulations.Add(population);
+                OpenPopulations.Add(population);
                 InfoChecker.ChangeItems("Okey", $"Вы открыли новую популяцию: {population.Name}");
             }
         }
