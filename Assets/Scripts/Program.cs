@@ -24,7 +24,7 @@ public class Program : MonoBehaviour
 
     private readonly IPopulation _population = new Human();
     private readonly List<IPopulation> _openPopulations = new() {new Human()};
-    private readonly List<ITryOpenPopulation> _tryOpenPopulations = new() {new FireHuman()};
+    private readonly List<IUnionPopulation> _tryOpenPopulations = new() {new FireHuman()};
 
     private bool _isCoroutineRunning;
 
@@ -46,7 +46,7 @@ public class Program : MonoBehaviour
     private void TryOpenNewPopulation()
     {
         foreach (var tryOpenPopulation in _tryOpenPopulations.Where(population =>
-                     !_openPopulations.Contains((IPopulation) population))) 
+                     !_openPopulations.Contains(population))) 
         {
             if (tryOpenPopulation.TryOpen(_population, out var population))
             {
@@ -56,7 +56,6 @@ public class Program : MonoBehaviour
         }
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
     private void CheckGameOver()
     {
         if (!_population.IsAlive)
@@ -82,7 +81,6 @@ public class Program : MonoBehaviour
         _populationDays.text = _population.DaysAlive.ToString(CultureInfo.InvariantCulture);
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator ChangeDay()
     {
         _isCoroutineRunning = true;

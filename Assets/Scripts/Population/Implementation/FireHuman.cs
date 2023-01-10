@@ -5,7 +5,7 @@ using Weather;
 
 namespace Population.Implementation
 {
-    public class FireHuman : IPopulation, ITryOpenPopulation
+    public class FireHuman : IUnionPopulation
     {
         public string Name => "FireHuman";
         public int DaysAlive { get; set; } = 0;
