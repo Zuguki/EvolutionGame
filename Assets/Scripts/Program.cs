@@ -12,12 +12,12 @@ public class Program : MonoBehaviour
 {
     public static readonly List<IPopulation> OpenPopulations = new() {new Human()};
     public static readonly List<IUnionPopulation> TryOpenPopulations = new() {new FireHuman()};
-    public static IPopulation Population = new Human();
+    public static IPopulation Population;
+    public static bool NeedsUpdateUI;
     
     [SerializeField] private GameObject populationPanel;
     
     private static bool _inProcess;
-    private bool _needGetPopulation = true;
 
     private TextMeshProUGUI _bodyTemperature;
     private TextMeshProUGUI _arterialPressure;
@@ -28,19 +28,37 @@ public class Program : MonoBehaviour
 
     private bool _isCoroutineRunning;
 
+    private void Start()
+    {
+        GetPopulationStats();
+    }
+
     private void Update()
     {
+        if (NeedsUpdateUI)
+        {
+            UpdateUIParams();
+            NeedsUpdateUI = false;
+        }
+        
         if (!_inProcess || _isCoroutineRunning)
             return;
+
+        if (Population is null)
+        {
+            Debug.Log("Выберите популяцию");
+            _inProcess = false;
+            return;
+        }
         
-        if (_needGetPopulation)
-            GetPopulationStats();
+        CheckGameOver();
+        if (!_inProcess)
+            return;
         
         StartCoroutine(ChangeDay());
         Population.UpdateParams();
         UpdateUIParams();
         TryOpenNewPopulation();
-        CheckGameOver();
     }
 
     private void TryOpenNewPopulation()
@@ -51,6 +69,7 @@ public class Program : MonoBehaviour
             if (tryOpenPopulation.TryOpen(Population, out var population))
             {
                 OpenPopulations.Add(population);
+                _inProcess = false;
                 InfoChecker.ChangeItems("Okey", $"Вы открыли новую популяцию: {population.Name}");
             }
         }
@@ -62,6 +81,14 @@ public class Program : MonoBehaviour
         {
             _inProcess = false;
             InfoChecker.ChangeItems("Oooops...", "Популяция погибла");
+
+            var oldPopulation = OpenPopulations.Find(population => population == Population);
+            OpenPopulations.Remove(oldPopulation);
+            
+            if (Population is not ITryOpenPopulation)
+                OpenPopulations.Add(new Human());
+            
+            Population = null;
         }
         else if (TimeController.DaysLeft <= 0)
         {
@@ -99,9 +126,6 @@ public class Program : MonoBehaviour
         _bloodInBody = populationPanel.transform.GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>();
         _radiationInBody = populationPanel.transform.GetChild(4).GetChild(1).GetComponent<TextMeshProUGUI>();
         _populationDays = populationPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>();
-
-        UpdateUIParams();
-        _needGetPopulation = false;
     }
 
     public static void Run()

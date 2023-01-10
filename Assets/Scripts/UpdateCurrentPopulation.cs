@@ -18,6 +18,7 @@ public class UpdateCurrentPopulation : MonoBehaviour
 
         populationName.text = CurrentPopulation.Name;
         Program.Population = CurrentPopulation;
+        Program.NeedsUpdateUI = true;
         NeedsUpdatePopulation = false;
     }
 }

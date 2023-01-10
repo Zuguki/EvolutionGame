@@ -40,18 +40,7 @@ namespace Population.Implementation
 
         public float WaterInBody { get; set; } = .6f;
 
-        public float BloodInBody
-        {
-            get => _bloodInBody;
-            set
-            {
-                _bloodInBody = _bloodInBody switch
-                {
-                    < 3 => 3,
-                    _ => value
-                };
-            }
-        }
+        public float BloodInBody { get; set; } = 5;
 
         public float Radiation
         {
@@ -69,7 +58,6 @@ namespace Population.Implementation
 
         private float _bodyTemperature = 36;
         private (float, float) _arterialPressure = (120f, 80f);
-        private float _bloodInBody = 5;
         private float _radiation = 100;
 
         private const float StartBodyTemperature = 36;

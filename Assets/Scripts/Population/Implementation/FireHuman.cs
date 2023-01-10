@@ -40,18 +40,7 @@ namespace Population.Implementation
 
         public float WaterInBody { get; set; } = .45f;
 
-        public float BloodInBody
-        {
-            get => _bloodInBody;
-            set
-            {
-                _bloodInBody = _bloodInBody switch
-                {
-                    < 3 => 3,
-                    _ => value
-                };
-            }
-        }
+        public float BloodInBody { get; set; } = 5;
 
         public float Radiation
         {
@@ -69,7 +58,6 @@ namespace Population.Implementation
 
         private float _bodyTemperature = 38;
         private (float, float) _arterialPressure = (150f, 85f);
-        private float _bloodInBody = 5;
         private float _radiation = 200;
 
         private const float StartBodyTemperature = 38;
@@ -86,9 +74,9 @@ namespace Population.Implementation
             UpdateRadiation();
         }
 
+        // TODO: Change
         public bool IsAlive =>
-            BodyTemperature is > 32 and < 44 && Radiation < 4000 && Pressure.Value is > 680 and < 750 &&
-            BloodInBody >= 3;
+            BodyTemperature is > 32 and < 44 && Radiation < 4000 && BloodInBody >= 3;
 
         private void UpdateTemperature()
         {
