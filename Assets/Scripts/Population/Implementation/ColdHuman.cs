@@ -56,9 +56,9 @@ namespace Population.Implementation
             }
         }
 
-        private float _bodyTemperature = 38;
-        private (float, float) _arterialPressure = (150f, 85f);
-        private float _radiation = 200;
+        private float _bodyTemperature = 34;
+        private (float, float) _arterialPressure = (110f, 75f);
+        private float _radiation = 70;
 
         private const float StartBodyTemperature = 38;
         private const int IterationDays = 90;
