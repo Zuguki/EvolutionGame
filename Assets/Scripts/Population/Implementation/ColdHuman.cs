@@ -5,9 +5,9 @@ using Weather;
 
 namespace Population.Implementation
 {
-    public class FireHuman : IUnionPopulation
+    public class ColdHuman : IUnionPopulation
     {
-        public string Name => "FireHuman";
+        public string Name => "ColdHuman";
         public int DaysAlive { get; set; } = 0;
         
         public float BodyTemperature
@@ -17,8 +17,8 @@ namespace Population.Implementation
             {
                 _bodyTemperature = _bodyTemperature switch
                 {
-                    < 32 => 32,
-                    > 44 => 44,
+                    < 30 => 30,
+                    > 40 => 40,
                     _ => value
                 };
             }
@@ -29,16 +29,16 @@ namespace Population.Implementation
             get => _arterialPressure;
             set
             {
-                if (_arterialPressure.Item1 < 90 && _arterialPressure.Item2 < 75)
-                    _arterialPressure = (90f, 75f);
-                if (_arterialPressure.Item1 > 250 && _arterialPressure.Item2 > 105)
-                    _arterialPressure = (250f, 105f);
+                if (_arterialPressure.Item1 < 70 && _arterialPressure.Item2 < 55)
+                    _arterialPressure = (70f, 55f);
+                if (_arterialPressure.Item1 > 220 && _arterialPressure.Item2 > 95)
+                    _arterialPressure = (110f, 75f);
                 else
                     _arterialPressure = value;
             }
         }
 
-        public float WaterInBody { get; set; } = .45f;
+        public float WaterInBody { get; set; } = .6f;
 
         public float BloodInBody { get; set; } = 5;
 
@@ -63,7 +63,7 @@ namespace Population.Implementation
         private const float StartBodyTemperature = 38;
         private const int IterationDays = 90;
         private readonly (float, float) _startArterialPressure = (150f, 85f);
-        private readonly IComfortWeather _comfortWeather = new FireHumanComfortWeather();
+        private readonly IComfortWeather _comfortWeather = new ColdHumanComfortWeather();
 
         public void UpdateParams()
         {
@@ -76,7 +76,7 @@ namespace Population.Implementation
 
         // TODO: Change
         public bool IsAlive =>
-            BodyTemperature is > 32 and < 44 && Radiation < 4000 && BloodInBody >= 3;
+            BodyTemperature is > 24 and < 40 && Radiation < 2000 && BloodInBody >= 3;
 
         private void UpdateTemperature()
         {
@@ -85,25 +85,25 @@ namespace Population.Implementation
             if (_comfortWeather.TemperatureWeather - Temperature.Value > 5)
                 BodyTemperature -= 2f / IterationDays;
             
-            if (WindSpeed.Value is > 5 and < 20 && Temperature.Value < 15)
+            if (WindSpeed.Value is > 5 and < 20 && Temperature.Value < -10)
                 BodyTemperature -= 1f / IterationDays;
-            if (WindSpeed.Value is >= 20 and < 30 && Temperature.Value < 15)
+            if (WindSpeed.Value is >= 20 and < 30 && Temperature.Value < -10)
                 BodyTemperature -= 2f / IterationDays;
-            if (WindSpeed.Value >= 30 && Temperature.Value < 15)
+            if (WindSpeed.Value > 30 && Temperature.Value < -10)
                 BodyTemperature -= 3f / IterationDays;
 
-            if (Humidity.Value is > 0 and < 30 && Temperature.Value < 15)
+            if (Humidity.Value is > 0 and < 30 && Temperature.Value < -10)
                 BodyTemperature -= 1f / IterationDays;
-            if (Humidity.Value is > 30 and < 60 && Temperature.Value < 15)
+            if (Humidity.Value is > 30 and < 60 && Temperature.Value < -10)
                 BodyTemperature -= 2f / IterationDays;
-            if (Humidity.Value is > 60 and < 100 && Temperature.Value < 15)
+            if (Humidity.Value is > 60 and < 100 && Temperature.Value < -10)
                 BodyTemperature -= 3f / IterationDays;
             
-            if (Humidity.Value is > 0 and < 30 && Temperature.Value > 30)
+            if (Humidity.Value is > 0 and < 30 && Temperature.Value > 10)
                 BodyTemperature += 1f / IterationDays;
-            if (Humidity.Value is > 30 and < 60 && Temperature.Value > 30)
+            if (Humidity.Value is > 30 and < 60 && Temperature.Value > 10)
                 BodyTemperature += 2f / IterationDays;
-            if (Humidity.Value is > 60 and < 100 && Temperature.Value > 30)
+            if (Humidity.Value is > 60 and < 100 && Temperature.Value > 10)
                 BodyTemperature += 3f / IterationDays;
         }
 
@@ -122,9 +122,9 @@ namespace Population.Implementation
 
         private void UpdateWaterInBody()
         {
-            if (BodyTemperature >= 40)
+            if (BodyTemperature >= 36)
                 WaterInBody -= .1f / IterationDays;
-            if (BodyTemperature is > 38 and < 39)
+            if (BodyTemperature is > 33.5f and < 34.5f)
                 WaterInBody = .6f;
         }
 
@@ -156,10 +156,10 @@ namespace Population.Implementation
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)
         {
             if (currentPopulation.IsAlive
-                && currentPopulation.BodyTemperature > 37.8 && currentPopulation.BodyTemperature < 38.2
-                && currentPopulation.Radiation is > 500 and < 600
-                && currentPopulation.ArterialPressure.Item1 > 150 && currentPopulation.ArterialPressure.Item2 > 85
-                && currentPopulation.ArterialPressure.Item1 < 170 && currentPopulation.ArterialPressure.Item2 < 90)
+                && currentPopulation.BodyTemperature > 34 && currentPopulation.BodyTemperature < 35
+                && currentPopulation.Radiation is > 400 and < 590
+                && currentPopulation.ArterialPressure.Item1 > 110 && currentPopulation.ArterialPressure.Item2 > 75
+                && currentPopulation.ArterialPressure.Item1 < 130 && currentPopulation.ArterialPressure.Item2 < 90)
             {
                 population = this;
                 return true;

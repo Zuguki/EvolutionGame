@@ -11,7 +11,7 @@ using UnityEngine;
 public class Program : MonoBehaviour
 {
     public static readonly List<IPopulation> OpenPopulations = new() {new Human()};
-    public static readonly List<IUnionPopulation> TryOpenPopulations = new() {new FireHuman()};
+    public static readonly List<IUnionPopulation> TryOpenPopulations = new() {new FireHuman(), new ColdHuman()};
     public static IPopulation Population;
     public static bool NeedsUpdateUI;
     
