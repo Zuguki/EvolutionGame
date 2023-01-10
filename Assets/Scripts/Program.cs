@@ -86,7 +86,7 @@ public class Program : MonoBehaviour
         _isCoroutineRunning = true;
         TimeController.Day += 1;
         Population.DaysAlive += 1;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.3f);
         _isCoroutineRunning = false;
     }
 
