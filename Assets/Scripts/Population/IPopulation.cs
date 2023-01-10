@@ -1,6 +1,4 @@
-﻿using ComfortWeather;
-
-namespace Population
+﻿namespace Population
 {
     public interface IPopulation
     {

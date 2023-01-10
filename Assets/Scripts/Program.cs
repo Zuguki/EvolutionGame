@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -73,11 +74,11 @@ public class Program : MonoBehaviour
 
     private void UpdateUIParams()
     {
-        _bodyTemperature.text = _population.BodyTemperature.ToString(CultureInfo.InvariantCulture);
+        _bodyTemperature.text = Math.Round(_population.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture);
         _arterialPressure.text = _population.ArterialPressure.ToCustomString();
-        _waterInBody.text = _population.WaterInBody.ToString(CultureInfo.InvariantCulture);
-        _bloodInBody.text = _population.BloodInBody.ToString(CultureInfo.InvariantCulture);
-        _radiationInBody.text = _population.Radiation.ToString(CultureInfo.InvariantCulture);
+        _waterInBody.text = Math.Round(_population.WaterInBody, 1).ToString(CultureInfo.InvariantCulture);
+        _bloodInBody.text = Math.Round(_population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture);
+        _radiationInBody.text = Math.Round(_population.Radiation, 1).ToString(CultureInfo.InvariantCulture);
         _populationDays.text = _population.DaysAlive.ToString(CultureInfo.InvariantCulture);
     }
 
