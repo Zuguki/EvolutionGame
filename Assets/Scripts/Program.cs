@@ -12,6 +12,7 @@ public class Program : MonoBehaviour
 {
     public static readonly List<IPopulation> OpenPopulations = new() {new Human()};
     public static readonly List<IUnionPopulation> TryOpenPopulations = new() {new FireHuman()};
+    public static IPopulation Population = new Human();
     
     [SerializeField] private GameObject populationPanel;
     
@@ -25,7 +26,6 @@ public class Program : MonoBehaviour
     private TextMeshProUGUI _radiationInBody;
     private TextMeshProUGUI _populationDays;
 
-    private readonly IPopulation _population = new Human();
     private bool _isCoroutineRunning;
 
     private void Update()
@@ -37,7 +37,7 @@ public class Program : MonoBehaviour
             GetPopulationStats();
         
         StartCoroutine(ChangeDay());
-        _population.UpdateParams();
+        Population.UpdateParams();
         UpdateUIParams();
         TryOpenNewPopulation();
         CheckGameOver();
@@ -48,7 +48,7 @@ public class Program : MonoBehaviour
         foreach (var tryOpenPopulation in TryOpenPopulations.Where(population =>
                      !OpenPopulations.Contains(population))) 
         {
-            if (tryOpenPopulation.TryOpen(_population, out var population))
+            if (tryOpenPopulation.TryOpen(Population, out var population))
             {
                 OpenPopulations.Add(population);
                 InfoChecker.ChangeItems("Okey", $"Вы открыли новую популяцию: {population.Name}");
@@ -58,7 +58,7 @@ public class Program : MonoBehaviour
 
     private void CheckGameOver()
     {
-        if (!_population.IsAlive)
+        if (!Population.IsAlive)
         {
             _inProcess = false;
             InfoChecker.ChangeItems("Oooops...", "Популяция погибла");
@@ -73,19 +73,19 @@ public class Program : MonoBehaviour
 
     private void UpdateUIParams()
     {
-        _bodyTemperature.text = Math.Round(_population.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture);
-        _arterialPressure.text = _population.ArterialPressure.ToCustomString();
-        _waterInBody.text = Math.Round(_population.WaterInBody, 1).ToString(CultureInfo.InvariantCulture);
-        _bloodInBody.text = Math.Round(_population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture);
-        _radiationInBody.text = Math.Round(_population.Radiation, 1).ToString(CultureInfo.InvariantCulture);
-        _populationDays.text = _population.DaysAlive.ToString(CultureInfo.InvariantCulture);
+        _bodyTemperature.text = Math.Round(Population.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture);
+        _arterialPressure.text = Population.ArterialPressure.ToCustomString();
+        _waterInBody.text = Math.Round(Population.WaterInBody, 1).ToString(CultureInfo.InvariantCulture);
+        _bloodInBody.text = Math.Round(Population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture);
+        _radiationInBody.text = Math.Round(Population.Radiation, 1).ToString(CultureInfo.InvariantCulture);
+        _populationDays.text = Population.DaysAlive.ToString(CultureInfo.InvariantCulture);
     }
 
     private IEnumerator ChangeDay()
     {
         _isCoroutineRunning = true;
         TimeController.Day += 1;
-        _population.DaysAlive += 1;
+        Population.DaysAlive += 1;
         yield return new WaitForSeconds(1);
         _isCoroutineRunning = false;
     }

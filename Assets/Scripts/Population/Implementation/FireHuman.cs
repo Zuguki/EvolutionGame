@@ -87,7 +87,7 @@ namespace Population.Implementation
         }
 
         public bool IsAlive =>
-            BodyTemperature is > 34 and < 46 && Radiation < 4000 && Pressure.Value is > 680 and < 750 &&
+            BodyTemperature is > 32 and < 44 && Radiation < 4000 && Pressure.Value is > 680 and < 750 &&
             BloodInBody >= 3;
 
         private void UpdateTemperature()
