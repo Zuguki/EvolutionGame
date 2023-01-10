@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Population;
 using Population.Implementation;
 using TMPro;
@@ -22,6 +22,8 @@ public class Program : MonoBehaviour
     private TextMeshProUGUI _populationDays;
 
     private readonly IPopulation _population = new Human();
+    private readonly List<IPopulation> _openPopulations = new() {new Human()};
+    private readonly List<ITryOpenPopulation> _tryOpenPopulations = new() {new FireHuman()};
 
     private bool _isCoroutineRunning;
 
@@ -36,7 +38,21 @@ public class Program : MonoBehaviour
         StartCoroutine(ChangeDay());
         _population.UpdateParams();
         UpdateUIParams();
+        TryOpenNewPopulation();
         CheckGameOver();
+    }
+
+    private void TryOpenNewPopulation()
+    {
+        foreach (var tryOpenPopulation in _tryOpenPopulations.Where(population =>
+                     !_openPopulations.Contains((IPopulation) population))) 
+        {
+            if (tryOpenPopulation.TryOpen(_population, out var population))
+            {
+                _openPopulations.Add(population);
+                InfoChecker.ChangeItems("Okey", $"Вы открыли новую популяцию: {population.Name}");
+            }
+        }
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -51,6 +67,7 @@ public class Program : MonoBehaviour
         {
             _inProcess = false;
             InfoChecker.ChangeItems("Oooops...", "Срок итераций подошел к концу");
+            TimeController.Day = 0;
         }
     }
 

@@ -4,6 +4,7 @@ namespace Population
 {
     public interface IPopulation
     {
+        public string Name { get; }
         public int DaysAlive { get; set; }
         public float BodyTemperature { get; set; }
         public (float, float) ArterialPressure { get; set; }

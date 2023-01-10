@@ -8,6 +8,7 @@ namespace Population.Implementation
 {
     public class Human : IPopulation
     {
+        public string Name => "Human";
         public int DaysAlive { get; set; } = 0;
 
         public float BodyTemperature
@@ -98,9 +99,9 @@ namespace Population.Implementation
             if (_comfortWeather.TemperatureWeather - Temperature.Value > 5)
                 BodyTemperature -= 2f / IterationDays;
             
-            if (WindSpeed.Value > 20 && Temperature.Value < 10)
+            if (WindSpeed.Value > 20 && Temperature.Value < 10 && WindSpeed.Value < 40)
                 BodyTemperature -= 1f / IterationDays;
-            if (WindSpeed.Value > 40 && Temperature.Value < 10)
+            if (WindSpeed.Value > 40 && Temperature.Value < 10 && WindSpeed.Value < 70)
                 BodyTemperature -= 2f / IterationDays;
             if (WindSpeed.Value > 70 && Temperature.Value < 10)
                 BodyTemperature -= 3f / IterationDays;
@@ -112,7 +113,7 @@ namespace Population.Implementation
             if (Humidity.Value is > 0 and < 50 && Temperature.Value > 20)
                 BodyTemperature += 1f / IterationDays;
             if (Humidity.Value is > 0 and < 50 && Temperature.Value > 20)
-                BodyTemperature += 1f / IterationDays;
+                BodyTemperature += 2f / IterationDays;
         }
 
         private void UpdateArterialPressure()
