@@ -11,59 +11,15 @@ namespace Population.Implementation
         public string Name => "Human";
         public Sprite SpriteOfMenu => SpritesManager.HumanSprite;
         public Sprite SpriteOfPopulationMenu => SpritesManager.HumanPopulationSprite;
+        
         public int DaysAlive { get; set; } = 0;
-
-        public float BodyTemperature
-        {
-            get => _bodyTemperature;
-            set
-            {
-                _bodyTemperature = _bodyTemperature switch
-                {
-                    < 26 => 26,
-                    > 42 => 42,
-                    _ => value
-                };
-            }
-        }
-
-        public (float, float) ArterialPressure
-        {
-            get => _arterialPressure;
-            set
-            {
-                if (_arterialPressure.Item1 < 80 && _arterialPressure.Item2 < 60)
-                    _arterialPressure = (80f, 60f);
-                if (_arterialPressure.Item1 > 240 && _arterialPressure.Item2 > 100)
-                    _arterialPressure = (240f, 100f);
-                else
-                    _arterialPressure = value;
-            }
-        }
-
+        public float BodyTemperature { get; set; } = 36.6f;
+        public (float, float) ArterialPressure { get; set; } = (120f, 80f);
         public float WaterInBody { get; set; } = .6f;
-
         public float BloodInBody { get; set; } = 5;
+        public float Radiation { get; set; } = 100;
 
-        public float Radiation
-        {
-            get => _radiation;
-            set
-            {
-                _radiation = _radiation switch
-                {
-                    < 0 => 0,
-                    > 7000 => 7000,
-                    _ => value
-                };
-            }
-        }
-
-        private float _bodyTemperature = 36;
-        private (float, float) _arterialPressure = (120f, 80f);
-        private float _radiation = 100;
-
-        private const float StartBodyTemperature = 36;
+        private const float StartBodyTemperature = 36.6f;
         private const int IterationDays = 90;
         private readonly (float, float) _startArterialPressure = (120f, 80f);
         private readonly IComfortWeather _comfortWeather = new HumanComfortWeather();
@@ -77,32 +33,38 @@ namespace Population.Implementation
             UpdateRadiation();
         }
 
-        // TODO: Change Pressure value
         public bool IsAlive =>
-            BodyTemperature is > 26 and < 42 && Radiation < 3000 && Pressure.Value is > 700 and < 800 &&
-            BloodInBody >= 3 && Radiation < 4000;
+            BodyTemperature is >= 26 and <= 42 &&
+            ArterialPressure.Item1 is >= 80 and <= 240 && ArterialPressure.Item2 is >= 60 and <= 100 &&
+            (WaterInBody > .4 || WaterInBody <= .4 && Temperature.Value < 20) &&
+            Temperature.GetMiddleTemperature(_comfortWeather) is <= 35 and >= -10 &&
+            Radiation <= 3000 &&
+            Pressure.GetMiddlePressure(_comfortWeather) is >= 700 and <= 800 &&
+            BloodInBody >= 3;
 
         private void UpdateTemperature()
         {
             if (Temperature.Value - _comfortWeather.TemperatureWeather > 5)
-                BodyTemperature += 1.5f / IterationDays;
+                BodyTemperature += 1.5f * ((Temperature.Value - _comfortWeather.TemperatureWeather) / 5) /
+                                   IterationDays;
             if (_comfortWeather.TemperatureWeather - Temperature.Value > 5)
-                BodyTemperature -= 2f / IterationDays;
+                BodyTemperature -= 1.5f * ((_comfortWeather.TemperatureWeather - Temperature.Value) / 5) /
+                                   IterationDays;
             
-            if (WindSpeed.Value > 20 && Temperature.Value < 10 && WindSpeed.Value < 40)
+            if (WindSpeed.Value is > 10 and < 30 && Temperature.Value < 10)
                 BodyTemperature -= 1f / IterationDays;
-            if (WindSpeed.Value > 40 && Temperature.Value < 10 && WindSpeed.Value < 70)
+            if (WindSpeed.Value is >= 30 and < 50 && Temperature.Value < 10)
                 BodyTemperature -= 2f / IterationDays;
-            if (WindSpeed.Value > 70 && Temperature.Value < 10)
+            if (WindSpeed.Value >= 50 && Temperature.Value < 10)
                 BodyTemperature -= 3f / IterationDays;
 
             if (Humidity.Value is > 0 and < 50 && Temperature.Value < 10)
                 BodyTemperature -= 1f / IterationDays;
-            if (Humidity.Value is > 50 and < 100 && Temperature.Value < 10)
+            if (Humidity.Value >= 50 && Temperature.Value < 10)
                 BodyTemperature -= 2.5f / IterationDays;
             if (Humidity.Value is > 0 and < 50 && Temperature.Value > 20)
                 BodyTemperature += 1f / IterationDays;
-            if (Humidity.Value is > 0 and < 50 && Temperature.Value > 20)
+            if (Humidity.Value >= 50 && Temperature.Value > 20)
                 BodyTemperature += 2f / IterationDays;
         }
 
@@ -116,7 +78,7 @@ namespace Population.Implementation
                     ArterialPressure.Item2 + 1 * upgrade / IterationDays);
             else if (downgrade > 0)
                 ArterialPressure = (ArterialPressure.Item1 - 4 * downgrade / IterationDays,
-                    ArterialPressure.Item2 - 2 * upgrade / IterationDays);
+                    ArterialPressure.Item2 - 2 * downgrade / IterationDays);
         }
 
         private void UpdateWaterInBody()
@@ -131,6 +93,8 @@ namespace Population.Implementation
         {
             if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) >= 20)
                 BloodInBody -= .5f / IterationDays;
+            if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) >= 50)
+                BloodInBody -= 1f / IterationDays;
             if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) <= 10)
                 BloodInBody += .1f / IterationDays;
             
@@ -140,10 +104,12 @@ namespace Population.Implementation
 
         private void UpdateRadiation()
         {
-            if (Weather.Radiation.Value < 500)
+            if (Weather.Radiation.Value == 0)
                 Radiation -= 500f / IterationDays;
-            if (Weather.Radiation.Value > 1000)
-                Radiation += 500f / IterationDays;
+            else if (Weather.Radiation.Value < 500)
+                Radiation -= (500f - Weather.Radiation.Value) / IterationDays;
+            else if (Weather.Radiation.Value > 500)
+                Radiation += Weather.Radiation.Value / IterationDays;
 
             if (Radiation <= 0)
                 Radiation = 0;

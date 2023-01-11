@@ -2,7 +2,7 @@
 {
     public class HumanComfortWeather : IComfortWeather
     {
-        public float TemperatureWeather => 10;
+        public float TemperatureWeather => 15;
         public float Pressure => 760;
         public float Radiation => 1;
         public float Humidity => 20;

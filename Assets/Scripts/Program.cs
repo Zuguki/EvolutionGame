@@ -7,6 +7,7 @@ using Population;
 using Population.Implementation;
 using TMPro;
 using UnityEngine;
+using Weather;
 
 public class Program : MonoBehaviour
 {
@@ -113,6 +114,8 @@ public class Program : MonoBehaviour
         _isCoroutineRunning = true;
         TimeController.Day += 1;
         Population.DaysAlive += 1;
+        Temperature.AddTemperature();
+        Pressure.AddPressure();
         yield return new WaitForSeconds(.3f);
         _isCoroutineRunning = false;
     }
