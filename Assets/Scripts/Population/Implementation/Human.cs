@@ -9,7 +9,8 @@ namespace Population.Implementation
     public class Human : IPopulation
     {
         public string Name => "Human";
-        public Sprite PopulationSprite => SpritesManager.HumanSprite;
+        public Sprite SpriteOfMenu => SpritesManager.HumanSprite;
+        public Sprite SpriteOfPopulationMenu => SpritesManager.HumanPopulationSprite;
         public int DaysAlive { get; set; } = 0;
 
         public float BodyTemperature

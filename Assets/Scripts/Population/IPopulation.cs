@@ -5,7 +5,8 @@ namespace Population
     public interface IPopulation
     {
         public string Name { get; }
-        public Sprite PopulationSprite { get; }
+        public Sprite SpriteOfMenu { get; }
+        public Sprite SpriteOfPopulationMenu { get; }
         public int DaysAlive { get; set; }
         public float BodyTemperature { get; set; }
         public (float, float) ArterialPressure { get; set; }

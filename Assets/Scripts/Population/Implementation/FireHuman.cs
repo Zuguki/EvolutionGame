@@ -9,7 +9,8 @@ namespace Population.Implementation
     public class FireHuman : IUnionPopulation
     {
         public string Name => "FireHuman";
-        public Sprite PopulationSprite => SpritesManager.FireHumanSprite;
+        public Sprite SpriteOfMenu => SpritesManager.FireHumanSprite;
+        public Sprite SpriteOfPopulationMenu => SpritesManager.FireHumanPopulationSprite;
         public int DaysAlive { get; set; } = 0;
         
         public float BodyTemperature

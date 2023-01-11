@@ -3548,6 +3548,9 @@ MonoBehaviour:
   humanSprite: {fileID: 21300000, guid: 84f7a3b0c2cab3941934ca035078f8c4, type: 3}
   fireHumanSprite: {fileID: 21300000, guid: 71373c0a864157f4fa7ce0dec1e20be1, type: 3}
   coldHumanSprite: {fileID: 21300000, guid: 3a7002526bd7f6949ad6fca42529dbbd, type: 3}
+  humanPopulationSprite: {fileID: 21300000, guid: b7b9765dbd4fcce4fab7040cd550f063, type: 3}
+  fireHumanPopulationSprite: {fileID: 21300000, guid: bc124e47b45b693439e344030c22a2c4, type: 3}
+  coldHumanPopulationSprite: {fileID: 21300000, guid: 902cee87bdaa356449efb81cf5f934e7, type: 3}
 --- !u!1 &520213838
 GameObject:
   m_ObjectHideFlags: 0
