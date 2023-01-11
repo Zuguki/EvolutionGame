@@ -1,6 +1,7 @@
 ﻿using System;
 using ComfortWeather;
 using ComfortWeather.Implementation;
+using UnityEngine;
 using Weather;
 
 namespace Population.Implementation
@@ -8,6 +9,7 @@ namespace Population.Implementation
     public class Human : IPopulation
     {
         public string Name => "Human";
+        public Sprite PopulationSprite => SpritesManager.HumanSprite;
         public int DaysAlive { get; set; } = 0;
 
         public float BodyTemperature

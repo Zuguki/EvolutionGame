@@ -1,8 +1,11 @@
-﻿namespace Population
+﻿using UnityEngine;
+
+namespace Population
 {
     public interface IPopulation
     {
         public string Name { get; }
+        public Sprite PopulationSprite { get; }
         public int DaysAlive { get; set; }
         public float BodyTemperature { get; set; }
         public (float, float) ArterialPressure { get; set; }
