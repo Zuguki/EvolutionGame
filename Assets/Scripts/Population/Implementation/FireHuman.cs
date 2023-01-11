@@ -107,10 +107,12 @@ namespace Population.Implementation
 
         private void UpdateRadiation()
         {
-            if (Weather.Radiation.Value < 500)
-                Radiation -= 500f / IterationDays;
-            if (Weather.Radiation.Value > 1000)
-                Radiation += 500f / IterationDays;
+            if (Weather.Radiation.Value == 0)
+                Radiation -= 600f / IterationDays;
+            else if (Weather.Radiation.Value <= 600)
+                Radiation -= (600f - Weather.Radiation.Value) / IterationDays;
+            else if (Weather.Radiation.Value > 600)
+                Radiation += Weather.Radiation.Value / IterationDays;
 
             if (Radiation <= 0)
                 Radiation = 0;
@@ -121,7 +123,7 @@ namespace Population.Implementation
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)
         {
             if (currentPopulation.IsAlive
-                && currentPopulation.BodyTemperature > 37.8 && currentPopulation.BodyTemperature < 38.2
+                && currentPopulation.BodyTemperature > 37.5 && currentPopulation.BodyTemperature < 38.5
                 && currentPopulation.Radiation is > 500 and < 600
                 && currentPopulation.ArterialPressure.Item1 > 150 && currentPopulation.ArterialPressure.Item2 > 85
                 && currentPopulation.ArterialPressure.Item1 < 170 && currentPopulation.ArterialPressure.Item2 < 90)

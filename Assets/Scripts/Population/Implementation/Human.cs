@@ -106,7 +106,7 @@ namespace Population.Implementation
         {
             if (Weather.Radiation.Value == 0)
                 Radiation -= 500f / IterationDays;
-            else if (Weather.Radiation.Value < 500)
+            else if (Weather.Radiation.Value <= 500)
                 Radiation -= (500f - Weather.Radiation.Value) / IterationDays;
             else if (Weather.Radiation.Value > 500)
                 Radiation += Weather.Radiation.Value / IterationDays;
