@@ -11,8 +11,11 @@ using Weather;
 
 public class Program : MonoBehaviour
 {
-    public static readonly List<IPopulation> OpenPopulations = new() {new Human()};
-    public static readonly List<IUnionPopulation> TryOpenPopulations = new() {new FireHuman(), new ColdHuman()};
+    private static IUnionPopulation fireMan = new FireHuman();
+    public static readonly List<IPopulation> OpenPopulations = new() {new Human(), fireMan};
+
+    public static readonly List<IUnionPopulation> TryOpenPopulations =
+        new() {fireMan, new ColdHuman(), new RadiationHuman()};
     public static IPopulation Population;
     public static bool NeedsUpdateUI;
     
@@ -116,10 +119,10 @@ public class Program : MonoBehaviour
     private IEnumerator ChangeDay()
     {
         _isCoroutineRunning = true;
+        Population.AddTemperature();
+        Population.AddPressure();
         TimeController.Day += 1;
         Population.DaysAlive += 1;
-        Temperature.AddTemperature();
-        Pressure.AddPressure();
         yield return new WaitForSeconds(.3f);
         _isCoroutineRunning = false;
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ComfortWeather;
 using ComfortWeather.Implementation;
 using UnityEngine;
@@ -23,6 +24,10 @@ namespace Population.Implementation
         private const int IterationDays = 90;
         private readonly (float, float) _startArterialPressure = (110f, 75f);
         private readonly IComfortWeather _comfortWeather = new ColdHumanComfortWeather();
+        
+        private readonly float[] _temperatures = new float[IterationDays];
+        private readonly float[] _pressures = new float[IterationDays];
+        private int DaysCounter => DaysAlive % IterationDays;
 
         public void UpdateParams()
         {
@@ -36,10 +41,10 @@ namespace Population.Implementation
         public bool IsAlive =>
             BodyTemperature is >= 24 and <= 40 &&
             ArterialPressure.Item1 is >= 70 and <= 220 && ArterialPressure.Item2 is >= 55 and <= 95 &&
-            (WaterInBody > .35 || WaterInBody <= .35 && Temperature.Value < 35) &&
-            Temperature.GetMiddleTemperature(_comfortWeather) is <= 20 and >= -20 &&
+            (WaterInBody > .35 || WaterInBody <= .35 && Temperature.Value < 10) &&
+            GetMiddleTemperature() is <= 20 and >= -20 &&
             Radiation <= 2000 &&
-            Pressure.GetMiddlePressure(_comfortWeather) is >= 750 and <= 820 &&
+            GetMiddlePressure() is >= 750 and <= 820 &&
             BloodInBody >= 3;
 
         private void UpdateTemperature()
@@ -120,6 +125,28 @@ namespace Population.Implementation
             if (Radiation >= 7000)
                 Radiation = 7000;
         }
+        
+        private float GetMiddleTemperature()
+        {
+            if (DaysAlive < IterationDays)
+                return _comfortWeather.TemperatureWeather;
+
+            return (float) Math.Round(_temperatures.Sum() / IterationDays, 1);
+        }
+
+        public void AddTemperature() =>
+            _temperatures[DaysCounter] = Temperature.Value;
+
+        private float GetMiddlePressure()
+        {
+            if (DaysAlive < IterationDays)
+                return _comfortWeather.Pressure;
+
+            return (float) Math.Round(_pressures.Sum() / IterationDays, 1);
+        }
+
+        public void AddPressure() =>
+            _pressures[DaysCounter] = Pressure.Value;
 
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)
         {

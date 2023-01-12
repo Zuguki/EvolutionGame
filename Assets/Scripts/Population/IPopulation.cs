@@ -15,6 +15,8 @@ namespace Population
         public float Radiation { get; set; }
         public float BloodInBody { get; set; }
         public bool IsAlive { get; }
+        public void AddTemperature();
+        public void AddPressure();
         
         public void UpdateParams();
     }

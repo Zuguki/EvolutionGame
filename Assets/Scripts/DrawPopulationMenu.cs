@@ -51,8 +51,7 @@ public class DrawPopulationMenu : MonoBehaviour
         {
             var instance = Instantiate(UpdatePrefabByPopulation(unionPopulation), _layout.transform);
             var button = instance.transform.GetChild(0).GetComponent<Button>();
-            button.image.sprite = unionPopulation.SpriteOfMenu;
-            button.image.color = Color.red;
+            button.image.sprite = unionPopulation.LockSpriteMenu;
             ObjectsForDestroy.Add(instance);
         }
     }
