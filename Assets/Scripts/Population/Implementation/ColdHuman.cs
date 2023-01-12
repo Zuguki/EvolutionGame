@@ -10,6 +10,7 @@ namespace Population.Implementation
     {
         public string Name => "ColdHuman";
         public Sprite SpriteOfMenu => SpritesManager.ColdHumanSprite;
+        public Sprite LockSpriteMenu => SpritesManager.LockColdHumanSprite;
         public Sprite SpriteOfPopulationMenu => SpritesManager.ColdHumanPopulationSprite;
         public int DaysAlive { get; set; } = 0;
         public float BodyTemperature { get; set; } = 34f;

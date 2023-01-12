@@ -10,6 +10,7 @@ namespace Population.Implementation
     {
         public string Name => "Human";
         public Sprite SpriteOfMenu => SpritesManager.HumanSprite;
+        public Sprite LockSpriteMenu => SpritesManager.HumanSprite;
         public Sprite SpriteOfPopulationMenu => SpritesManager.HumanPopulationSprite;
         
         public int DaysAlive { get; set; } = 0;

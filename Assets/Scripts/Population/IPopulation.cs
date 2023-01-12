@@ -6,6 +6,7 @@ namespace Population
     {
         public string Name { get; }
         public Sprite SpriteOfMenu { get; }
+        public Sprite LockSpriteMenu { get; }
         public Sprite SpriteOfPopulationMenu { get; }
         public int DaysAlive { get; set; }
         public float BodyTemperature { get; set; }
