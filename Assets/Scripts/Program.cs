@@ -7,15 +7,13 @@ using Population;
 using Population.Implementation;
 using TMPro;
 using UnityEngine;
-using Weather;
 
 public class Program : MonoBehaviour
 {
-    private static IUnionPopulation fireMan = new FireHuman();
-    public static readonly List<IPopulation> OpenPopulations = new() {new Human(), fireMan};
+    public static readonly List<IPopulation> OpenPopulations = new() {new Human()};
 
     public static readonly List<IUnionPopulation> TryOpenPopulations =
-        new() {fireMan, new ColdHuman(), new RadiationHuman()};
+        new() {new FireHuman(), new ColdHuman(), new RadiationHuman()};
     public static IPopulation Population;
     public static bool NeedsUpdateUI;
     
@@ -108,12 +106,13 @@ public class Program : MonoBehaviour
 
     private void UpdateUIParams()
     {
-        _bodyTemperature.text = Math.Round(Population.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture);
-        _arterialPressure.text = Population.ArterialPressure.ToCustomString();
-        _waterInBody.text = Math.Round(Population.WaterInBody, 1).ToString(CultureInfo.InvariantCulture);
-        _bloodInBody.text = Math.Round(Population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture);
-        _radiationInBody.text = Math.Round(Population.Radiation, 1).ToString(CultureInfo.InvariantCulture);
-        _populationDays.text = Population.DaysAlive.ToString(CultureInfo.InvariantCulture);
+        _bodyTemperature.text =
+            Math.Round(Population.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture) + " C°";
+        _arterialPressure.text = Population.ArterialPressure.ToCustomString() + " мм.рт.ст";
+        _waterInBody.text = Math.Round(Population.WaterInBody * 100, 1).ToString(CultureInfo.InvariantCulture) + " %";
+        _bloodInBody.text = Math.Round(Population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture) + " л";
+        _radiationInBody.text = Math.Round(Population.Radiation, 1).ToString(CultureInfo.InvariantCulture) + " мЗв";
+        _populationDays.text = Population.DaysAlive.ToString(CultureInfo.InvariantCulture) + " д";
     }
 
     private IEnumerator ChangeDay()
