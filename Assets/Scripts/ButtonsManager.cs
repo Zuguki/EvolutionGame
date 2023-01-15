@@ -26,6 +26,7 @@ public class ButtonsManager : MonoBehaviour
     public void ChangeEscMenuActiveStatus()
     {
         escMenu.SetActive(!escMenu.activeSelf);
+        Time.timeScale = PauseMenu.IsGamePaused ? 1f : 0f;
         PauseMenu.IsGamePaused = !PauseMenu.IsGamePaused;
     }
 
