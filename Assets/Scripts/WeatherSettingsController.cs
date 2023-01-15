@@ -26,6 +26,7 @@ public class WeatherSettingsController : MonoBehaviour
     private TMP_InputField _preciptiationValue;
     private Slider _preciptioationSlider;
 
+    private Button _applyButton;
     private Button _resetButton;
 
     private void Awake()
@@ -43,7 +44,8 @@ public class WeatherSettingsController : MonoBehaviour
         _preciptiationValue = transform.GetChild(6).GetChild(2).GetComponent<TMP_InputField>();
         _preciptioationSlider = transform.GetChild(6).GetChild(1).GetComponent<Slider>();
         
-        _resetButton = transform.GetChild(7).GetChild(0).GetComponent<Button>();
+        _applyButton = transform.GetChild(7).GetChild(0).GetComponent<Button>();
+        _resetButton = transform.GetChild(8).GetChild(0).GetComponent<Button>();
     }
 
     public void Start()
@@ -66,6 +68,7 @@ public class WeatherSettingsController : MonoBehaviour
         _preciptiationValue.onValueChanged.AddListener(value => Preciptiation.Value = ParseFloat(value));
         _preciptioationSlider.onValueChanged.AddListener(value => Preciptiation.Value = value);
         
+        _applyButton.onClick.AddListener(() => gameObject.SetActive(false));
         _resetButton.onClick.AddListener(ResetValues);
     }
 

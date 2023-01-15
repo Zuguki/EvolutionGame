@@ -12,6 +12,7 @@ public class TimeLineSettingsController : MonoBehaviour
     private TMP_InputField _yearsValue;
     private Slider _yearsSlider;
 
+    private Button _applyButton;
     private Button _resetButton;
     
     private void Awake()
@@ -23,7 +24,8 @@ public class TimeLineSettingsController : MonoBehaviour
         _yearsValue = transform.GetChild(3).GetChild(2).GetComponent<TMP_InputField>();
         _yearsSlider = transform.GetChild(3).GetChild(1).GetComponent<Slider>();
         
-        _resetButton = transform.GetChild(4).GetChild(0).GetComponent<Button>();
+        _applyButton = transform.GetChild(4).GetChild(0).GetComponent<Button>();
+        _resetButton = transform.GetChild(5).GetChild(0).GetComponent<Button>();
     }
     
     public void Start()
@@ -37,6 +39,7 @@ public class TimeLineSettingsController : MonoBehaviour
         _yearsValue.onValueChanged.AddListener(value => TimeController.YearsCount = int.Parse(value));
         _yearsSlider.onValueChanged.AddListener(value => TimeController.YearsCount = (int) value);
         
+        _applyButton.onClick.AddListener(() => gameObject.SetActive(false));
         _resetButton.onClick.AddListener(ResetValues);
     }
     
