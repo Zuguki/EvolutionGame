@@ -1,15 +1,10 @@
-﻿using System;
-using System.Linq;
-using ComfortWeather;
-using Population;
-
-namespace Weather
+﻿namespace Weather
 {
     public static class Temperature
     {
-        public static float MinValue => -82;
-        public static float MaxValue => 56;
-        public static float DefaultValue => 0;
+        public static float MinValue => -82.2f;
+        public static float MaxValue => 56.7f;
+        public static float DefaultValue => 15;
         public static float Value { get; set; }
         
         static Temperature()
