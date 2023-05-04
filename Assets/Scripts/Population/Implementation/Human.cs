@@ -21,10 +21,11 @@ namespace Population.Implementation
         public float BloodInBody { get; set; } = 5;
         public float Radiation { get; set; } = 100;
 
-        private const float StartBodyTemperature = 36.6f;
+        private const float StartBodyTemperature = 36.5f;
         private const int IterationDays = 90;
         private readonly (float, float) _startArterialPressure = (120f, 80f);
         private readonly IComfortWeather _comfortWeather = new HumanComfortWeather();
+        private readonly IPopulationParamsUpdater _populationParamsUpdater = new PopulationParamsUpdater();
         
         private readonly float[] _temperatures = new float[IterationDays];
         private readonly float[] _pressures = new float[IterationDays];
@@ -50,28 +51,29 @@ namespace Population.Implementation
 
         private void UpdateTemperature()
         {
-            if (Temperature.Value - _comfortWeather.TemperatureWeather > 5)
-                BodyTemperature += 1.5f * ((Temperature.Value - _comfortWeather.TemperatureWeather) / 5) /
-                                   IterationDays;
-            if (_comfortWeather.TemperatureWeather - Temperature.Value > 5)
-                BodyTemperature -= 1.5f * ((_comfortWeather.TemperatureWeather - Temperature.Value) / 5) /
-                                   IterationDays;
-            
-            if (WindSpeed.Value is > 10 and < 30 && Temperature.Value < 10)
-                BodyTemperature -= 1f / IterationDays;
-            if (WindSpeed.Value is >= 30 and < 50 && Temperature.Value < 10)
-                BodyTemperature -= 2f / IterationDays;
-            if (WindSpeed.Value >= 50 && Temperature.Value < 10)
-                BodyTemperature -= 3f / IterationDays;
-
-            if (Humidity.Value is > 0 and < 50 && Temperature.Value < 10)
-                BodyTemperature -= 1f / IterationDays;
-            if (Humidity.Value >= 50 && Temperature.Value < 10)
-                BodyTemperature -= 2.5f / IterationDays;
-            if (Humidity.Value is > 0 and < 50 && Temperature.Value > 20)
-                BodyTemperature += 1f / IterationDays;
-            if (Humidity.Value >= 50 && Temperature.Value > 20)
-                BodyTemperature += 2f / IterationDays;
+            BodyTemperature += _populationParamsUpdater.GetBodyTemperature();
+            // if (Temperature.Value - _comfortWeather.TemperatureWeather > 5)
+            //     BodyTemperature += 1.5f * ((Temperature.Value - _comfortWeather.TemperatureWeather) / 5) /
+            //                        IterationDays;
+            // if (_comfortWeather.TemperatureWeather - Temperature.Value > 5)
+            //     BodyTemperature -= 1.5f * ((_comfortWeather.TemperatureWeather - Temperature.Value) / 5) /
+            //                        IterationDays;
+            //
+            // if (WindSpeed.Value is > 10 and < 30 && Temperature.Value < 10)
+            //     BodyTemperature -= 1f / IterationDays;
+            // if (WindSpeed.Value is >= 30 and < 50 && Temperature.Value < 10)
+            //     BodyTemperature -= 2f / IterationDays;
+            // if (WindSpeed.Value >= 50 && Temperature.Value < 10)
+            //     BodyTemperature -= 3f / IterationDays;
+            //
+            // if (Humidity.Value is > 0 and < 50 && Temperature.Value < 10)
+            //     BodyTemperature -= 1f / IterationDays;
+            // if (Humidity.Value >= 50 && Temperature.Value < 10)
+            //     BodyTemperature -= 2.5f / IterationDays;
+            // if (Humidity.Value is > 0 and < 50 && Temperature.Value > 20)
+            //     BodyTemperature += 1f / IterationDays;
+            // if (Humidity.Value >= 50 && Temperature.Value > 20)
+            //     BodyTemperature += 2f / IterationDays;
         }
 
         private void UpdateArterialPressure()
@@ -97,15 +99,21 @@ namespace Population.Implementation
 
         private void UpdateBloodInBody()
         {
-            if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) >= 20)
-                BloodInBody -= .5f / IterationDays;
-            if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) >= 50)
-                BloodInBody -= 1f / IterationDays;
-            if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) <= 10)
-                BloodInBody += .1f / IterationDays;
-            
-            if (BloodInBody >= 5f)
-                BloodInBody = 5f;
+            BloodInBody = _populationParamsUpdater.GetBloodInBody(DaysAlive, BloodInBody);
+            // if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) >= 20)
+            //     BloodInBody -= .5f / IterationDays;
+            // if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) >= 50)
+            //     BloodInBody -= 1f / IterationDays;
+            // if (Math.Abs(ArterialPressure.Item1 - _startArterialPressure.Item1) <= 10)
+            //     BloodInBody += .1f / IterationDays;
+            //
+            // if (BloodInBody >= 5f)
+            //     BloodInBody = 5f;
+        }
+        
+        private void UpdateRadiation()
+        {
+            Radiation = _populationParamsUpdater.GetRadiationInBody(DaysAlive, _comfortWeather.Radiation);
         }
         
         private float GetMiddleTemperature()
@@ -129,20 +137,5 @@ namespace Population.Implementation
 
         public void AddPressure() =>
             _pressures[DaysCounter] = Pressure.Value;
-
-        private void UpdateRadiation()
-        {
-            if (Weather.Radiation.Value == 0)
-                Radiation -= 500f / IterationDays;
-            else if (Weather.Radiation.Value <= 500)
-                Radiation -= (500f - Weather.Radiation.Value) / IterationDays;
-            else if (Weather.Radiation.Value > 500)
-                Radiation += Weather.Radiation.Value / IterationDays;
-
-            if (Radiation <= 0)
-                Radiation = 0;
-            if (Radiation >= 7000)
-                Radiation = 7000;
-        }
     }
 }
