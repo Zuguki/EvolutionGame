@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Population
 {
@@ -8,6 +9,7 @@ namespace Population
         public Sprite SpriteOfMenu { get; }
         public Sprite LockSpriteMenu { get; }
         public Sprite SpriteOfPopulationMenu { get; }
+        public List<string> DeadMessages { get; set; }
         public int DaysAlive { get; set; }
         public float BodyTemperature { get; set; }
         public (float, float) ArterialPressure { get; set; }

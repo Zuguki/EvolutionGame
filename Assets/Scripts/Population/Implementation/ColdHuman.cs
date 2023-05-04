@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ComfortWeather;
 using ComfortWeather.Implementation;
@@ -13,6 +14,7 @@ namespace Population.Implementation
         public Sprite SpriteOfMenu => SpritesManager.ColdHumanSprite;
         public Sprite LockSpriteMenu => SpritesManager.LockColdHumanSprite;
         public Sprite SpriteOfPopulationMenu => SpritesManager.ColdHumanPopulationSprite;
+        public List<string> DeadMessages { get; set; } = new List<string>();
         public int DaysAlive { get; set; } = 0;
         public float BodyTemperature { get; set; } = 34f;
         public (float, float) ArterialPressure { get; set; } = (110f, 75f);

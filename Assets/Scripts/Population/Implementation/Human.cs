@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.Generic;
 using ComfortWeather;
 using ComfortWeather.Implementation;
 using UnityEngine;
@@ -13,6 +12,8 @@ namespace Population.Implementation
         public Sprite SpriteOfMenu => SpritesManager.HumanSprite;
         public Sprite LockSpriteMenu => SpritesManager.HumanSprite;
         public Sprite SpriteOfPopulationMenu => SpritesManager.HumanPopulationSprite;
+
+        public List<string> DeadMessages { get; set; } = new List<string>();
         
         public int DaysAlive { get; set; } = 0;
         public float BodyTemperature { get; set; } = 36.6f;
@@ -26,6 +27,7 @@ namespace Population.Implementation
         private readonly (float, float) _startArterialPressure = (120f, 80f);
         private readonly IComfortWeather _comfortWeather = new HumanComfortWeather();
         private readonly IPopulationParamsUpdater _populationParamsUpdater = new PopulationParamsUpdater();
+        private readonly IPopulationDeadParams _deadParams = new HumanDeadParams();
         
         private readonly float[] _temperatures = new float[IterationDays];
         private readonly float[] _pressures = new float[IterationDays];
@@ -38,20 +40,38 @@ namespace Population.Implementation
             UpdateWaterInBody();
             UpdateBloodInBody();
             UpdateRadiation();
+            TryAddDeadMessage();
         }
 
-        public bool IsAlive =>
-            BodyTemperature is >= 26 and <= 42 &&
-            ArterialPressure.Item1 is >= 80 and <= 240 && ArterialPressure.Item2 is >= 60 and <= 100 &&
-            (WaterInBody > .4 || WaterInBody <= .4 && Temperature.Value < 20) &&
-            GetMiddleTemperature() is <= 35 and >= -10 &&
-            Radiation <= 3000 &&
-            GetMiddlePressure() is >= 700 and <= 800 &&
-            BloodInBody >= 3;
+        public bool IsAlive => DeadMessages.Count == 0;
+
+        private void TryAddDeadMessage()
+        {
+            if (BodyTemperature < _deadParams.MinTemperature)
+                DeadMessages.Add($"Температура тела должна быть больше чем {_deadParams.MinTemperature}");
+            if (BodyTemperature > _deadParams.MaxTemperature)
+                DeadMessages.Add($"Температура тела должна быть меньше чем {_deadParams.MaxTemperature}");
+
+            if (ArterialPressure.Item1 < _deadParams.MinArterialPressure.Item1 &&
+                ArterialPressure.Item2 < _deadParams.MinArterialPressure.Item2)
+                DeadMessages.Add(
+                    $"Артериальное давление должно быть больше чем {_deadParams.MinArterialPressure.ToCustomString()}");
+            
+            if (ArterialPressure.Item1 > _deadParams.MaxArterialPressure.Item1 &&
+                ArterialPressure.Item2 > _deadParams.MaxArterialPressure.Item2)
+                DeadMessages.Add(
+                    $"Артериальное давление должно быть меньше чем {_deadParams.MinArterialPressure.ToCustomString()}");
+            
+            if (WaterInBody < _deadParams.MinWaterInBody)
+                DeadMessages.Add($"Объем жидкости должен быть больше чем {_deadParams.MinWaterInBody * 100}");
+            
+            if (Radiation >= _deadParams.MaxRadiationInBody)
+                DeadMessages.Add($"Радиации в организме должно быть меньше чем {_deadParams.MaxRadiationInBody}");
+        }
 
         private void UpdateTemperature()
         {
-            BodyTemperature += _populationParamsUpdater.GetBodyTemperature();
+            BodyTemperature += (_populationParamsUpdater.GetBodyTemperature() - BodyTemperature) / TimeController.DaysLeft;
             // if (Temperature.Value - _comfortWeather.TemperatureWeather > 5)
             //     BodyTemperature += 1.5f * ((Temperature.Value - _comfortWeather.TemperatureWeather) / 5) /
             //                        IterationDays;
@@ -115,25 +135,9 @@ namespace Population.Implementation
         {
             Radiation = _populationParamsUpdater.GetRadiationInBody(DaysAlive, _comfortWeather.Radiation);
         }
-        
-        private float GetMiddleTemperature()
-        {
-            if (DaysAlive < IterationDays)
-                return _comfortWeather.TemperatureWeather;
-
-            return (float) Math.Round(_temperatures.Sum() / IterationDays, 1);
-        }
 
         public void AddTemperature() =>
             _temperatures[DaysCounter] = Temperature.Value;
-
-        private float GetMiddlePressure()
-        {
-            if (DaysAlive < IterationDays)
-                return _comfortWeather.Pressure;
-
-            return (float) Math.Round(_pressures.Sum() / IterationDays, 1);
-        }
 
         public void AddPressure() =>
             _pressures[DaysCounter] = Pressure.Value;

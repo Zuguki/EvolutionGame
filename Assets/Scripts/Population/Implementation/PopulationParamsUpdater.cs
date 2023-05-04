@@ -43,8 +43,10 @@ namespace Population.Implementation
             return 0;
         }
 
-        public float GetBloodInBody(int daysAlive, float bloodInBody) =>
-            bloodInBody * (1 - 0.01f * daysAlive);
+        public float GetBloodInBody(int daysAlive, float bloodInBody)
+        {
+            return bloodInBody * (1 - 0.01f);
+        }
 
         public float GetRadiationInBody(int daysAlive, float comfortRadiation)
         {
@@ -54,9 +56,9 @@ namespace Population.Implementation
             return Radiation.Value *
                    (RadiationExposureCoefficient +
                     ((Preciptiation.MaxValue - Preciptiation.Value) / RegulationCoefficient) *
-                    (SoilPurity.MaxValue - SoilPurity.Value)) * daysAlive;
+                    (SoilPurity.MaxValue - SoilPurity.Value));
             
-            // Если радиация < = комфортной для популяции, то радиация = 0 иначе:
+            // Если радиация <= комфортной для популяции, то радиация = 0 иначе:
             //
             // Радиация в организме = Rокр * (Квоз.р + ((MAXос - КО) /Крег) * (MAXчист.п - ЧП)) * t
             //
