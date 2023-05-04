@@ -81,12 +81,12 @@ public class WeatherSettingsController : MonoBehaviour
 
     private void UpdateTextPanels()
     {
-        temperaturePanelValue.text = Temperature.Value.ToString(CultureInfo.InvariantCulture) + " C°";
-        pressurePanelValue.text = Pressure.Value.ToString(CultureInfo.InvariantCulture) + " мм.рт.ст";
-        radiationPanelValue.text = Radiation.Value.ToString(CultureInfo.InvariantCulture) + " мЗв";
-        humidityPanelValue.text = Humidity.Value.ToString(CultureInfo.InvariantCulture) + " %";
-        windSpeedPanelValue.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture) + " м/с";
-        preciptiationPanelValue.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture) + " мм";
+        temperaturePanelValue.text = Temperature.Value.ToString(CultureInfo.InvariantCulture);
+        pressurePanelValue.text = Pressure.Value.ToString(CultureInfo.InvariantCulture);
+        radiationPanelValue.text = Radiation.Value.ToString(CultureInfo.InvariantCulture);
+        humidityPanelValue.text = Humidity.Value.ToString(CultureInfo.InvariantCulture);
+        windSpeedPanelValue.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture);
+        preciptiationPanelValue.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture);
     }
 
     private void UpdateTextValues()

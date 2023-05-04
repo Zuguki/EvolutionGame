@@ -18,6 +18,7 @@ public class Program : MonoBehaviour
     public static bool NeedsUpdateUI;
     
     [SerializeField] private GameObject populationPanel;
+    [SerializeField] private GameObject advancePopulationPanel;
     
     private static bool _inProcess;
 
@@ -107,12 +108,12 @@ public class Program : MonoBehaviour
     private void UpdateUIParams()
     {
         _bodyTemperature.text =
-            Math.Round(Population.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture) + " C°";
-        _arterialPressure.text = Population.ArterialPressure.ToCustomString() + " мм.рт.ст";
-        _waterInBody.text = Math.Round(Population.WaterInBody * 100, 1).ToString(CultureInfo.InvariantCulture) + " %";
-        _bloodInBody.text = Math.Round(Population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture) + " л";
-        _radiationInBody.text = Math.Round(Population.Radiation, 1).ToString(CultureInfo.InvariantCulture) + " мЗв";
-        _populationDays.text = Population.DaysAlive.ToString(CultureInfo.InvariantCulture) + " д";
+            Math.Round(Population.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture);
+        _arterialPressure.text = Population.ArterialPressure.ToCustomString();
+        _waterInBody.text = Math.Round(Population.WaterInBody * 100, 1).ToString(CultureInfo.InvariantCulture);
+        _bloodInBody.text = Math.Round(Population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture);
+        _radiationInBody.text = Math.Round(Population.Radiation, 1).ToString(CultureInfo.InvariantCulture);
+        _populationDays.text = Population.DaysAlive.ToString(CultureInfo.InvariantCulture);
     }
 
     private IEnumerator ChangeDay()
@@ -129,12 +130,14 @@ public class Program : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     private void GetPopulationStats()
     {
-        _bodyTemperature = populationPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
-        _arterialPressure = populationPanel.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
-        _waterInBody = populationPanel.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>();
-        _bloodInBody = populationPanel.transform.GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>();
-        _radiationInBody = populationPanel.transform.GetChild(4).GetChild(1).GetComponent<TextMeshProUGUI>();
-        _populationDays = populationPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _arterialPressure = populationPanel.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _waterInBody = populationPanel.transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _radiationInBody = populationPanel.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>();
+        
+        _bodyTemperature = populationPanel.transform.GetChild(1).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _bloodInBody = populationPanel.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
+        
+        _populationDays = advancePopulationPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
     public static void Run()
