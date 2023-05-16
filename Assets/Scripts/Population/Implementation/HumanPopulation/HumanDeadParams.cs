@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Population.Implementation
+namespace Population.Implementation.HumanPopulation
 {
     public class HumanDeadParams : IPopulationDeadParams
     {
@@ -11,9 +11,11 @@ namespace Population.Implementation
         public (float, float) MaxArterialPressure => (180, 120);
 
         public float MinWaterInBody => .4f;
-        public float MaxWaterInBody { get; }
+        public float MaxWaterInBody => 1;
         
-        public float MinRadiationInBody { get; }
+        public float MinBloodInBody => 3;
+
+        public float MinRadiationInBody => 0;
         public float MaxRadiationInBody => 7 * (float) Math.Pow(10, 6);
     }
 }

@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Linq;
 using Population;
 using Population.Implementation;
+using Population.Implementation.ColdHumanPopulation;
+using Population.Implementation.HumanPopulation;
 using TMPro;
 using UnityEngine;
 
@@ -60,7 +62,7 @@ public class Program : MonoBehaviour
             return;
         
         StartCoroutine(ChangeDay());
-        Population.UpdateParams();
+        Population.Parameters.UpdateParams();
         UpdateUIParams();
         TryOpenNewPopulation();
     }
@@ -85,7 +87,7 @@ public class Program : MonoBehaviour
         if (!Population.IsAlive)
         {
             _inProcess = false;
-            InfoChecker.ChangeItems("Популяция погибла из за: " + string.Join(',', Population.DeadMessages));
+            InfoChecker.ChangeItems("Популяция погибла из за: " + string.Join(',', Population.Parameters.DeadMessages));
 
             var oldPopulation = OpenPopulations.Find(population => population == Population);
             OpenPopulations.Remove(oldPopulation);
@@ -109,22 +111,20 @@ public class Program : MonoBehaviour
     private void UpdateUIParams()
     {
         _bodyTemperature.text =
-            Math.Round(Population.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture);
-        _arterialPressure.text = Population.ArterialPressure.ToCustomString();
-        _waterInBody.text = Math.Round(Population.WaterInBody * 100, 1).ToString(CultureInfo.InvariantCulture);
-        _bloodInBody.text = Math.Round(Population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture);
-        _radiationInBody.text = Math.Round(Population.Radiation, 1).ToString(CultureInfo.InvariantCulture);
-        _populationCount.text = Population.Count.ToString();
-        _populationDays.text = Population.DaysAlive.ToString(CultureInfo.InvariantCulture);
+            Math.Round(Population.Parameters.BodyTemperature, 1).ToString(CultureInfo.InvariantCulture);
+        _arterialPressure.text = Population.Parameters.ArterialPressure.ToCustomString();
+        _waterInBody.text = Math.Round(Population.Parameters.WaterInBody * 100, 1).ToString(CultureInfo.InvariantCulture);
+        _bloodInBody.text = Math.Round(Population.Parameters.BloodInBody, 1).ToString(CultureInfo.InvariantCulture);
+        _radiationInBody.text = Math.Round(Population.Parameters.Radiation, 1).ToString(CultureInfo.InvariantCulture);
+        _populationCount.text = Population.Parameters.Count.ToString();
+        _populationDays.text = Population.Parameters.DaysAlive.ToString(CultureInfo.InvariantCulture);
     }
 
     private IEnumerator ChangeDay()
     {
         _isCoroutineRunning = true;
-        Population.AddTemperature();
-        Population.AddPressure();
         TimeController.CurrentDay += 1;
-        Population.DaysAlive += 1;
+        Population.Parameters.DaysAlive += 1;
         yield return new WaitForSeconds(.3f);
         _isCoroutineRunning = false;
     }

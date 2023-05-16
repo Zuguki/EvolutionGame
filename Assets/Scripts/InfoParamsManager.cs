@@ -41,10 +41,11 @@ public class InfoParamsManager : MonoBehaviour
             return;
         }
 
-        populationTitle.text = population.Title;
-        populationDetails1.text = population.Details1;
-        populationDetails2.text = population.Details2;
-        populationDetails3.text = population.Details3;
+        var populationDescription = population.Description;
+        populationTitle.text = populationDescription.Title;
+        populationDetails1.text = populationDescription.Details1;
+        populationDetails2.text = populationDescription.Details2;
+        populationDetails3.text = populationDescription.Details3;
     }
 
     public void ShowArterialPressureDescription()

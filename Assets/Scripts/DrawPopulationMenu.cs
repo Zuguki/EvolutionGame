@@ -41,7 +41,7 @@ public class DrawPopulationMenu : MonoBehaviour
         {
             var instance = Instantiate(UpdatePrefabByPopulation(population), _layout.transform);
             var button = instance.transform.GetChild(0).GetComponent<Button>();
-            button.image.sprite = population.SpriteOfMenu;
+            button.image.sprite = population.Sprites.SpriteOfMenu;
             button.onClick.AddListener(() => AddButtonManager(population));
             ObjectsForDestroy.Add(instance);
         }
@@ -51,7 +51,7 @@ public class DrawPopulationMenu : MonoBehaviour
         {
             var instance = Instantiate(UpdatePrefabByPopulation(unionPopulation), _layout.transform);
             var button = instance.transform.GetChild(0).GetComponent<Button>();
-            button.image.sprite = unionPopulation.LockSpriteMenu;
+            button.image.sprite = unionPopulation.Sprites.LockSpriteMenu;
             ObjectsForDestroy.Add(instance);
         }
     }

@@ -26,7 +26,7 @@ public class UpdateCurrentPopulation : MonoBehaviour
         }
         
         populationName.text = CurrentPopulation.Name;
-        populationImage.sprite = CurrentPopulation.SpriteOfPopulationMenu;
+        populationImage.sprite = CurrentPopulation.Sprites.SpriteOfPopulationMenu;
         Program.Population = CurrentPopulation;
         Program.NeedsUpdateUI = true;
         NeedsUpdatePopulation = false;

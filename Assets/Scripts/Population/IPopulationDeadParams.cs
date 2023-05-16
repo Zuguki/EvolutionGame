@@ -11,6 +11,8 @@
         float MinWaterInBody { get; }
         float MaxWaterInBody { get; }
         
+        float MinBloodInBody { get; }
+        
         float MinRadiationInBody { get; }
         float MaxRadiationInBody { get; }
     }

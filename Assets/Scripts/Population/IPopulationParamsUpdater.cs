@@ -8,8 +8,10 @@
 
         float GetWaterInBody();
 
-        float GetBloodInBody(int daysAlive, float bloodInBody);
+        float GetBloodInBody(IPopulationParams populationParams, IPopulationDeadParams deadParams);
 
-        float GetRadiationInBody(int daysAlive, float comfortRadiation);
+        float GetRadiationInBody(float radiation);
+
+        long GetPopulationCount(long count);
     }
 }
