@@ -21,6 +21,7 @@ namespace Population.Implementation
         public (float, float) ArterialPressure { get; set; } = (110f, 75f);
         public float WaterInBody { get; set; } = .6f;
         public float BloodInBody { get; set; } = 5;
+        public long Count { get; set; } = Parameters.PopulationCount.Value;
         public float Radiation { get; set; } = 70;
         
         public string Title => "Радиационный человек";

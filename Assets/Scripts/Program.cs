@@ -27,6 +27,7 @@ public class Program : MonoBehaviour
     private TextMeshProUGUI _waterInBody;
     private TextMeshProUGUI _bloodInBody;
     private TextMeshProUGUI _radiationInBody;
+    private TextMeshProUGUI _populationCount;
     private TextMeshProUGUI _populationDays;
 
     private bool _isCoroutineRunning;
@@ -113,6 +114,7 @@ public class Program : MonoBehaviour
         _waterInBody.text = Math.Round(Population.WaterInBody * 100, 1).ToString(CultureInfo.InvariantCulture);
         _bloodInBody.text = Math.Round(Population.BloodInBody, 1).ToString(CultureInfo.InvariantCulture);
         _radiationInBody.text = Math.Round(Population.Radiation, 1).ToString(CultureInfo.InvariantCulture);
+        _populationCount.text = Population.Count.ToString();
         _populationDays.text = Population.DaysAlive.ToString(CultureInfo.InvariantCulture);
     }
 
@@ -136,8 +138,9 @@ public class Program : MonoBehaviour
         
         _bodyTemperature = populationPanel.transform.GetChild(1).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
         _bloodInBody = populationPanel.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
-        
-        _populationDays = advancePopulationPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+
+        _populationCount = advancePopulationPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+        _populationDays = advancePopulationPanel.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
     public static void Run()

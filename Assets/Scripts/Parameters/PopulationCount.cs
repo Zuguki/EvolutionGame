@@ -13,7 +13,7 @@
             $"Минимальное значение: {MinValue}°C\nСреднее значение: {DefaultValue}°C\nМаксимальное значение: {MaxValue}°C";
 
         public static int MinValue => 1;
-        public static long MaxValue => 100_000_000_000;
+        public static long MaxValue => 10_000_000_000;
         public static int DefaultValue => 1_000_000;
         public static long Value { get; set; }
 

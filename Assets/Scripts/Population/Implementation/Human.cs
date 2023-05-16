@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using ComfortWeather;
 using ComfortWeather.Implementation;
 using UnityEngine;
@@ -21,6 +23,7 @@ namespace Population.Implementation
         public (float, float) ArterialPressure { get; set; } = (120f, 80f);
         public float WaterInBody { get; set; } = .6f;
         public float BloodInBody { get; set; } = 5;
+        public long Count { get; set; } = Parameters.PopulationCount.Value;
         public float Radiation { get; set; } = 100;
         
         public string Title => "Человек";
@@ -51,6 +54,8 @@ namespace Population.Implementation
         private readonly float[] _temperatures = new float[IterationDays];
         private readonly float[] _pressures = new float[IterationDays];
         private int DaysCounter => DaysAlive % IterationDays;
+        private double bnr;
+        private double dnr;
 
         public void UpdateParams()
         {
@@ -59,38 +64,130 @@ namespace Population.Implementation
             UpdateWaterInBody();
             UpdateBloodInBody();
             UpdateRadiation();
-            TryAddDeadMessage();
+            UpdatePopulationCount();
+            
+            TryAddDeadMessage(out var list);
+            DeadMessages = DeadMessages.Union(list).ToList();
         }
 
-        public bool IsAlive => DeadMessages.Count == 0;
+        public bool IsAlive => Count > 0;
 
-        private void TryAddDeadMessage()
+        private void UpdateBnrDnr()
         {
+            if (TryAddDeadMessage(out var list) && list.Count == 4)
+            {
+                bnr = 0;
+                dnr = 1_000;
+            }
+            else if (TryAddDeadMessage(out _))
+            {
+                bnr = 0.01;
+                dnr = 100;
+            }
+            else if (TryAddDiscomfortParams(out _))
+            {
+                bnr = 0.015;
+                dnr = 0.015;
+            }
+            else
+            {
+                bnr = 0.025;
+                dnr = 0.015;
+            }
+        }
+
+        private void UpdatePopulationCount()
+        {
+            // N = N0*e^((BNR-DNR)*t)/365
+            //
+            // N– численность популяции
+            // N0– начальная численность популяции
+            //     BNR– темп рождаемости 
+            // DNR– темп смертности 
+            // t– время итерации
+            UpdateBnrDnr();
+            Count = (long) (Count * Math.Pow(Math.E, (bnr - dnr) / 365));
+        }
+
+        private bool TryAddDiscomfortParams(out List<string> messages)
+        {
+            messages = new List<string>();
+            if (Temperature.Value < _comfortWeather.MinTemperature)
+                messages.Add($"Температура окружающей среды ниже нормы: {_comfortWeather.MinTemperature}");
+            if (Temperature.Value > _comfortWeather.MaxTemperature)
+                messages.Add($"Температура окружающей среды выше нормы: {_comfortWeather.MaxTemperature}");
+            
+            if (Pressure.Value < _comfortWeather.MinPressure)
+                messages.Add($"Атмосферное давление окружающей среды ниже нормы: {_comfortWeather.MinPressure}");
+            if (Pressure.Value > _comfortWeather.MaxPressure)
+                messages.Add($"Атмосферное давление окружающей среды выше нормы: {_comfortWeather.MaxPressure}");
+            
+            if (Weather.Radiation.Value > _comfortWeather.MaxRadiation)
+                messages.Add($"Радиация окружающей среды выше нормы: {_comfortWeather.MaxRadiation}");
+            
+            if (Humidity.Value < _comfortWeather.MinHumidity)
+                messages.Add($"Влажность окружающей среды ниже нормы: {_comfortWeather.MinHumidity}");
+            if (Humidity.Value > _comfortWeather.MaxHumidity)
+                messages.Add($"Влажность окружающей среды выше нормы: {_comfortWeather.MaxHumidity}");
+            
+            if (WindSpeed.Value < _comfortWeather.MinWindSpeed)
+                messages.Add($"Скорость ветра окружающей среды ниже нормы: {_comfortWeather.MinWindSpeed}");
+            if (WindSpeed.Value > _comfortWeather.MaxWindSpeed)
+                messages.Add($"Скорость ветра окружающей среды выше нормы: {_comfortWeather.MaxWindSpeed}");
+            
+            if (Preciptiation.Value < _comfortWeather.MinPressure)
+                messages.Add($"Количество осадков окружающей среды ниже нормы: {_comfortWeather.MinPreciptiation}");
+            if (Preciptiation.Value > _comfortWeather.MaxPreciptiation)
+                messages.Add($"Количество осадков окружающей среды выше нормы: {_comfortWeather.MaxPreciptiation}");
+            
+            if (AirQuality.Value < _comfortWeather.MinAirQuality)
+                messages.Add($"Качество воздуха окружающей среды ниже нормы: {_comfortWeather.MinAirQuality}");
+            if (AirQuality.Value > _comfortWeather.MaxAirQuality)
+                messages.Add($"Качество воздуха окружающей среды выше нормы: {_comfortWeather.MaxAirQuality}");
+            
+            if (SoilPurity.Value < _comfortWeather.MinSoilPurity)
+                messages.Add($"Чистота почвы окружающей среды ниже нормы: {_comfortWeather.MinSoilPurity}");
+            if (SoilPurity.Value > _comfortWeather.MaxSoilPurity)
+                messages.Add($"Чистота почвы окружающей среды выше нормы: {_comfortWeather.MaxSoilPurity}");
+            
+            if (Noise.Value < _comfortWeather.MinNoise)
+                messages.Add($"Влажность окружающей среды ниже нормы: {_comfortWeather.MinNoise}");
+            if (Noise.Value > _comfortWeather.MaxNoise)
+                messages.Add($"Влажность окружающей среды выше нормы: {_comfortWeather.MaxNoise}");
+
+            return messages.Count != 0;
+        }
+
+        private bool TryAddDeadMessage(out List<string> messages)
+        {
+            messages = new List<string>();
             if (BodyTemperature < _deadParams.MinTemperature)
-                DeadMessages.Add($"Температура тела должна быть больше чем {_deadParams.MinTemperature}");
+                messages.Add($"Температура тела должна быть больше чем {_deadParams.MinTemperature}");
             if (BodyTemperature > _deadParams.MaxTemperature)
-                DeadMessages.Add($"Температура тела должна быть меньше чем {_deadParams.MaxTemperature}");
+                messages.Add($"Температура тела должна быть меньше чем {_deadParams.MaxTemperature}");
 
             if (ArterialPressure.Item1 < _deadParams.MinArterialPressure.Item1 &&
                 ArterialPressure.Item2 < _deadParams.MinArterialPressure.Item2)
-                DeadMessages.Add(
+                messages.Add(
                     $"Артериальное давление должно быть больше чем {_deadParams.MinArterialPressure.ToCustomString()}");
             
             if (ArterialPressure.Item1 > _deadParams.MaxArterialPressure.Item1 &&
                 ArterialPressure.Item2 > _deadParams.MaxArterialPressure.Item2)
-                DeadMessages.Add(
+                messages.Add(
                     $"Артериальное давление должно быть меньше чем {_deadParams.MinArterialPressure.ToCustomString()}");
             
             if (WaterInBody < _deadParams.MinWaterInBody)
-                DeadMessages.Add($"Объем жидкости должен быть больше чем {_deadParams.MinWaterInBody * 100}");
+                messages.Add($"Объем жидкости должен быть больше чем {_deadParams.MinWaterInBody * 100}");
             
             if (Radiation >= _deadParams.MaxRadiationInBody)
-                DeadMessages.Add($"Радиации в организме должно быть меньше чем {_deadParams.MaxRadiationInBody}");
+                messages.Add($"Радиации в организме должно быть меньше чем {_deadParams.MaxRadiationInBody}");
+
+            return messages.Count != 0;
         }
 
         private void UpdateTemperature()
         {
-            BodyTemperature += (_populationParamsUpdater.GetBodyTemperature() - BodyTemperature) / TimeController.DaysLeft;
+            BodyTemperature = _populationParamsUpdater.GetBodyTemperature();
             // if (Temperature.Value - _comfortWeather.TemperatureWeather > 5)
             //     BodyTemperature += 1.5f * ((Temperature.Value - _comfortWeather.TemperatureWeather) / 5) /
             //                        IterationDays;

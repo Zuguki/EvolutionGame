@@ -17,6 +17,7 @@ namespace Population
         public float WaterInBody { get; set; }
         public float Radiation { get; set; }
         public float BloodInBody { get; set; }
+        public long Count { get; set; }
         public bool IsAlive { get; }
         public void AddTemperature();
         public void AddPressure();
