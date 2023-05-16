@@ -6,9 +6,10 @@ using Weather;
 
 namespace Population.Implementation
 {
-    public class Human : IPopulation
+    public class Human : IPopulation, IPopulationDescription
     {
         public string Name => "Human";
+        public PopulationEnum PopulationEnum => PopulationEnum.Human;
         public Sprite SpriteOfMenu => SpritesManager.HumanSprite;
         public Sprite LockSpriteMenu => SpritesManager.HumanSprite;
         public Sprite SpriteOfPopulationMenu => SpritesManager.HumanPopulationSprite;
@@ -21,6 +22,24 @@ namespace Population.Implementation
         public float WaterInBody { get; set; } = .6f;
         public float BloodInBody { get; set; } = 5;
         public float Radiation { get; set; } = 100;
+        
+        public string Title => "Человек";
+
+        public string Details1 =>
+            "Человек - живое существо, обладающее мышлением и речью.";
+
+        public string Details2 => "Две ноги, две руки, прямохождение, короткий волосяной покров, передвижение на двух конечностях(ногах), пять пальцев на ногах и руках, глаза расположены с передней части головы.";
+
+        public string Details3 =>
+            $@"1. температура воздуха: 18 - 24 °C
+2. атмосферное давление: 740 - 760 мм. рт. ст.
+3. радиация: <=20 мкЗв / сутки
+4. влажность воздуха: 55-70 %
+5. скорость ветра: 0-5 м/с
+6. количество осадков: 100 - 500 мм/год
+7. качество воздуха: 0 - 100 AQI
+8. чистота почвы(санитарное число): 0,85-0,98 C
+9. шум: 40-55 дБ";
 
         private const float StartBodyTemperature = 36.5f;
         private const int IterationDays = 90;
@@ -141,5 +160,7 @@ namespace Population.Implementation
 
         public void AddPressure() =>
             _pressures[DaysCounter] = Pressure.Value;
+
+
     }
 }

@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace Population
 {
-    public interface IPopulation
+    public interface IPopulation : IPopulationDescription
     {
         public string Name { get; }
+        public PopulationEnum PopulationEnum { get; }
         public Sprite SpriteOfMenu { get; }
         public Sprite LockSpriteMenu { get; }
         public Sprite SpriteOfPopulationMenu { get; }

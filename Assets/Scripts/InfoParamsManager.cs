@@ -1,27 +1,51 @@
 ﻿using Parameters;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Weather;
 
 public class InfoParamsManager : MonoBehaviour
 {
     [SerializeField] private GameObject factorUi;
-
     [SerializeField] private TextMeshProUGUI factorTitle;
     [SerializeField] private TextMeshProUGUI factorDetails1;
     [SerializeField] private TextMeshProUGUI factorDetails2;
     [SerializeField] private TextMeshProUGUI factorDetails3;
     
     [SerializeField] private GameObject parameterUi;
-
     [SerializeField] private TextMeshProUGUI parameterTitle;
     [SerializeField] private TextMeshProUGUI parameterDetails1;
     [SerializeField] private TextMeshProUGUI parameterDetails2;
     [SerializeField] private TextMeshProUGUI parameterDetails3;
+    
+    [SerializeField] private GameObject populationUi;
+    [SerializeField] private TextMeshProUGUI populationTitle;
+    [SerializeField] private TextMeshProUGUI populationDetails1;
+    [SerializeField] private TextMeshProUGUI populationDetails2;
+    [SerializeField] private TextMeshProUGUI populationDetails3;
 
     public void ChangeFactorUiStatus() => ChangeUiActiveStatus(factorUi);
     public void ChangeParameterUiStatus() => ChangeUiActiveStatus(parameterUi);
+    public void ChangePopulationUiStatus() => ChangeUiActiveStatus(populationUi);
+
+    public void ShowPopulationDescription()
+    {
+        ChangeUiActiveStatus(populationUi);
+        
+        var population = Program.Population;
+        if (population is null)
+        {
+            populationTitle.text = "Популяция не выбрана";
+            populationDetails1.text = "Пустоса";
+            populationDetails2.text = "Не виден";
+            populationDetails3.text = "Везде";
+            return;
+        }
+
+        populationTitle.text = population.Title;
+        populationDetails1.text = population.Details1;
+        populationDetails2.text = population.Details2;
+        populationDetails3.text = population.Details3;
+    }
 
     public void ShowArterialPressureDescription()
     {

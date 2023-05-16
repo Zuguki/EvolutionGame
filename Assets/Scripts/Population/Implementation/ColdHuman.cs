@@ -11,6 +11,7 @@ namespace Population.Implementation
     public class ColdHuman : IUnionPopulation
     {
         public string Name => "ColdHuman";
+        public PopulationEnum PopulationEnum => PopulationEnum.ColdHuman;
         public Sprite SpriteOfMenu => SpritesManager.ColdHumanSprite;
         public Sprite LockSpriteMenu => SpritesManager.LockColdHumanSprite;
         public Sprite SpriteOfPopulationMenu => SpritesManager.ColdHumanPopulationSprite;
@@ -21,6 +22,24 @@ namespace Population.Implementation
         public float WaterInBody { get; set; } = .6f;
         public float BloodInBody { get; set; } = 5;
         public float Radiation { get; set; } = 70;
+        
+        public string Title => "Ледяной человек";
+
+        public string Details1 =>
+            "Ледяной человек - живое существо, обладающее мышлением и речью, приспособленное к выживанию в холодной среде обитания.";
+
+        public string Details2 => "Две ноги, две руки, прямохождение, обширный волосяной покров по всему телу(практически шерсть , пять пальцев на ногах и руках, кожа более бледного тона.";
+
+        public string Details3 =>
+            $@"1. температура окружающей среды: 0 - 18 °C
+2. атмосферное давление: 770-790 мм рт ст
+3. радиация: <=15 мкЗв / сутки
+4. влажность воздуха: 20-50 %
+5. скорость ветра: 0-5 м/с
+6. количество осадков: 100 - 500 мм/год
+7. качество воздуха: 0 - 100 AQI
+8. чистота почвы(санитарное число): 0,85-0,98 С
+9. шум: 40-55 дБ";
 
         private const float StartBodyTemperature = 34f;
         private const int IterationDays = 90;

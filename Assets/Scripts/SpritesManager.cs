@@ -7,10 +7,10 @@ public class SpritesManager : MonoBehaviour
     [SerializeField] private Sprite fireHumanSprite;
     [SerializeField] private Sprite coldHumanSprite;
     [SerializeField] private Sprite radiationHumanSprite;
-    
-     [SerializeField] private Sprite lockFireHumanSprite;
-     [SerializeField] private Sprite lockColdHumanSprite;
-     [SerializeField] private Sprite lockRadiationHumanSprite;   
+
+    [SerializeField] private Sprite lockFireHumanSprite;
+    [SerializeField] private Sprite lockColdHumanSprite;
+    [SerializeField] private Sprite lockRadiationHumanSprite;
 
     [SerializeField] private Sprite humanPopulationSprite;
     [SerializeField] private Sprite fireHumanPopulationSprite;
@@ -26,7 +26,7 @@ public class SpritesManager : MonoBehaviour
     public static Sprite LockFireHumanSprite;
     public static Sprite LockColdHumanSprite;
     public static Sprite LockRadiationHumanSprite;
-    
+
     public static Sprite HumanPopulationSprite;
     public static Sprite FireHumanPopulationSprite;
     public static Sprite ColdHumanPopulationSprite;

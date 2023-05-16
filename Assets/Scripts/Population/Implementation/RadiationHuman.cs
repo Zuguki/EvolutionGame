@@ -11,6 +11,7 @@ namespace Population.Implementation
     public class RadiationHuman : IUnionPopulation
     {
         public string Name => "RadiationHuman";
+        public PopulationEnum PopulationEnum => PopulationEnum.RadiationHuman;
         public Sprite SpriteOfMenu => SpritesManager.RadiationHumanSprite;
         public Sprite LockSpriteMenu => SpritesManager.LockRadiationHumanSprite;
         public Sprite SpriteOfPopulationMenu => SpritesManager.RadiationHumanPopulationSprite;
@@ -21,6 +22,24 @@ namespace Population.Implementation
         public float WaterInBody { get; set; } = .6f;
         public float BloodInBody { get; set; } = 5;
         public float Radiation { get; set; } = 70;
+        
+        public string Title => "Радиационный человек";
+
+        public string Details1 =>
+            "Радиационный человек - живое существо, обладающее мышлением и речью, приспособленное к выживанию в среде обитания, с повышенным радиационным фоном.";
+
+        public string Details2 => "Цвет кожи более насыщенный(темно-оранжевого цвета или ярко-красного, как пример), волосяной покров практически отсутствует, прямохождение, остальные конечности остаются, но могут видоизмениться или вовсе могут появиться новые конечности.";
+
+        public string Details3 =>
+            $@"1. температура окружающей среды: 19 - 27 °C
+2. атмосферное давление: 710-730 мм рт ст
+3. радиация: <=30 мкЗв / сутки
+4. влажность воздуха: 10-30 %
+5. скорость ветра: 0-10 м/с
+6. количество осадков: 100 - 350 мм/год
+7. качество воздуха: 0 - 100 AQI
+8. чистота почвы(санитарное число):  0,85-0,98 С
+9. шум: 40-55 дБ";
 
         private const float StartBodyTemperature = 37f;
         private const int IterationDays = 90;
