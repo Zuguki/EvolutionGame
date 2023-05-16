@@ -4,102 +4,109 @@ using Weather;
 
 public class InfoParamsManager : MonoBehaviour
 {
-    [SerializeField] private GameObject ui;
+    [SerializeField] private GameObject factorUI;
 
-    [SerializeField] private TextMeshProUGUI title;
-    [SerializeField] private TextMeshProUGUI details1;
-    [SerializeField] private TextMeshProUGUI details2;
-    [SerializeField] private TextMeshProUGUI details3;
+    [SerializeField] private TextMeshProUGUI factorTitle;
+    [SerializeField] private TextMeshProUGUI factorDetails1;
+    [SerializeField] private TextMeshProUGUI factorDetails2;
+    [SerializeField] private TextMeshProUGUI factorDetails3;
+    
+    [SerializeField] private GameObject parameterUi;
 
-    public void ChangeUiActiveStatus() => ui.SetActive(!ui.activeSelf);
+    [SerializeField] private TextMeshProUGUI parameterTitle;
+    [SerializeField] private TextMeshProUGUI parameterDetails1;
+    [SerializeField] private TextMeshProUGUI parameterDetails2;
+    [SerializeField] private TextMeshProUGUI parameterDetails3;
+
+    public void ChangeUiActiveStatus() => factorUI.SetActive(!factorUI.activeSelf);
 
     public void ShowTemperatureDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = Temperature.Title;
-        details1.text = Temperature.Details1;
-        details2.text = Temperature.Details2;
-        details3.text = Temperature.Details3;
+        factorTitle.text = Temperature.Title;
+        factorDetails1.text = Temperature.Details1;
+        factorDetails2.text = Temperature.Details2;
+        factorDetails3.text = Temperature.Details3;
     }
 
     public void ShowHumidityDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = Humidity.Title;
-        details1.text = Humidity.Details1;
-        details2.text = Humidity.Details2;
-        details3.text = Humidity.Details3;
+        factorTitle.text = Humidity.Title;
+        factorDetails1.text = Humidity.Details1;
+        factorDetails2.text = Humidity.Details2;
+        factorDetails3.text = Humidity.Details3;
     }
 
     public void ShowWindSpeedDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = WindSpeed.Title;
-        details1.text = WindSpeed.Details1;
-        details2.text = WindSpeed.Details2;
-        details3.text = WindSpeed.Details3;
+        factorTitle.text = WindSpeed.Title;
+        factorDetails1.text = WindSpeed.Details1;
+        factorDetails2.text = WindSpeed.Details2;
+        factorDetails3.text = WindSpeed.Details3;
     }
 
     public void ShowPressureDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = Pressure.Title;
-        details1.text = Pressure.Details1;
-        details2.text = Pressure.Details2;
-        details3.text = Pressure.Details3;
+        factorTitle.text = Pressure.Title;
+        factorDetails1.text = Pressure.Details1;
+        factorDetails2.text = Pressure.Details2;
+        factorDetails3.text = Pressure.Details3;
     }
 
     public void ShowRadiationDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = Radiation.Title;
-        details1.text = Radiation.Details1;
-        details2.text = Radiation.Details2;
-        details3.text = Radiation.Details3;
+        factorTitle.text = Radiation.Title;
+        factorDetails1.text = Radiation.Details1;
+        factorDetails2.text = Radiation.Details2;
+        factorDetails3.text = Radiation.Details3;
     }
 
     public void ShowPreciptiationDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = Preciptiation.Title;
-        details1.text = Preciptiation.Details1;
-        details2.text = Preciptiation.Details2;
-        details3.text = Preciptiation.Details3;
+        factorTitle.text = Preciptiation.Title;
+        factorDetails1.text = Preciptiation.Details1;
+        factorDetails2.text = Preciptiation.Details2;
+        factorDetails3.text = Preciptiation.Details3;
     }
 
     public void ShowAirQualityDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = AirQuality.Title;
-        details1.text = AirQuality.Details1;
-        details2.text = AirQuality.Details2;
-        details3.text = AirQuality.Details3;
+        factorTitle.text = AirQuality.Title;
+        factorDetails1.text = AirQuality.Details1;
+        factorDetails2.text = AirQuality.Details2;
+        factorDetails3.text = AirQuality.Details3;
     }
 
     public void ShowNoiseDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = Noise.Title;
-        details1.text = Noise.Details1;
-        details2.text = Noise.Details2;
-        details3.text = Noise.Details3;
+        factorTitle.text = Noise.Title;
+        factorDetails1.text = Noise.Details1;
+        factorDetails2.text = Noise.Details2;
+        factorDetails3.text = Noise.Details3;
     }
 
     public void ShowSoilPurityDescription()
     {
         ChangeUiActiveStatus();
 
-        title.text = SoilPurity.Title;
-        details1.text = SoilPurity.Details1;
-        details2.text = SoilPurity.Details2;
-        details3.text = SoilPurity.Details3;
+        factorTitle.text = SoilPurity.Title;
+        factorDetails1.text = SoilPurity.Details1;
+        factorDetails2.text = SoilPurity.Details2;
+        factorDetails3.text = SoilPurity.Details3;
     }
 }
