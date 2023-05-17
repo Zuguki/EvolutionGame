@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Population;
-using Population.Implementation;
 using Population.Implementation.ColdHumanPopulation;
+using Population.Implementation.FireHumanPopulation;
 using Population.Implementation.HumanPopulation;
 using TMPro;
 using UnityEngine;
 
 public class Program : MonoBehaviour
 {
-    public static readonly List<IPopulation> OpenPopulations = new() {new Human()};
+    public static readonly List<IPopulation> OpenPopulations = new() {new Human(), new ColdHuman(), new FireHuman()};
 
     public static readonly List<IUnionPopulation> TryOpenPopulations =
-        new() {new FireHuman(), new ColdHuman(), new RadiationHuman()};
+        new() { };
     public static IPopulation Population;
     public static bool NeedsUpdateUI;
     
