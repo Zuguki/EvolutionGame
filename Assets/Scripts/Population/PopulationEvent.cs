@@ -18,12 +18,12 @@ namespace Population
             if (population.ArterialPressure.Item1 < deadParams.MinArterialPressure.Item1 &&
                 population.ArterialPressure.Item2 < deadParams.MinArterialPressure.Item2)
                 messages.Add(
-                    $"Артериальное давления ниже {deadParams.MinArterialPressure.ToCustomString()}мм рт ст");
+                    $"Артериальное давление ниже {deadParams.MinArterialPressure.ToCustomString()}мм рт ст");
             
             if (population.ArterialPressure.Item1 > deadParams.MaxArterialPressure.Item1 &&
                 population.ArterialPressure.Item2 > deadParams.MaxArterialPressure.Item2)
                 messages.Add(
-                    $"Артериальное давления выше {deadParams.MaxArterialPressure.ToCustomString()}мм рт ст");
+                    $"Артериальное давление выше {deadParams.MaxArterialPressure.ToCustomString()}мм рт ст");
             
             if (population.WaterInBody < deadParams.MinWaterInBody)
                 messages.Add($"Объем жидкости ниже {deadParams.MinWaterInBody * 100}%");

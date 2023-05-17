@@ -54,7 +54,7 @@ public class Program : MonoBehaviour
 
         if (Population is null)
         {
-            InfoChecker.ChangeItems("Сначала стоит выбрать популяцию");
+            InfoChecker.ChangeSimpleItem("Сначала стоит выбрать популяцию");
             _inProcess = false;
             return;
         }
@@ -78,7 +78,7 @@ public class Program : MonoBehaviour
             {
                 OpenPopulations.Add(population);
                 _inProcess = false;
-                InfoChecker.ChangeItems($"Вы открыли новую популяцию: {population.Name}");
+                InfoChecker.ChangeSimpleItem($"Вы открыли новую популяцию: {population.Name}");
                 TimeController.CurrentDay = 0;
             }
         }
@@ -89,7 +89,8 @@ public class Program : MonoBehaviour
         if (!Population.IsAlive)
         {
             _inProcess = false;
-            InfoChecker.ChangeItems("Популяция погибла из за: " + string.Join(',', Population.Parameters.DeadMessages));
+            InfoChecker.ChangeMediumItem("Популяция погибла", string.Join('\n', Population.Parameters.DeadMessages));
+            // InfoChecker.ChangeSimpleItem("Популяция погибла из за: " + string.Join(',', Population.Parameters.DeadMessages));
 
             var oldPopulation = OpenPopulations.Find(population => population == Population);
             OpenPopulations.Remove(oldPopulation);
@@ -105,7 +106,7 @@ public class Program : MonoBehaviour
         else if (TimeController.DaysLeft <= 0)
         {
             _inProcess = false;
-            InfoChecker.ChangeItems("Срок итераций подошел к концу");
+            InfoChecker.ChangeSimpleItem("Срок итераций подошел к концу");
             TimeController.CurrentDay = 0;
         }
     }
