@@ -11,25 +11,30 @@ namespace Population
         {
             messages = new List<string>();
             if (population.BodyTemperature < deadParams.MinTemperature)
-                messages.Add($"Температура тела должна быть больше чем {deadParams.MinTemperature}");
+                messages.Add($"Температура тела ниже {deadParams.MinTemperature}°C");
             if (population.BodyTemperature > deadParams.MaxTemperature)
-                messages.Add($"Температура тела должна быть меньше чем {deadParams.MaxTemperature}");
+                messages.Add($"Температура тела выше {deadParams.MaxTemperature}°C");
 
             if (population.ArterialPressure.Item1 < deadParams.MinArterialPressure.Item1 &&
                 population.ArterialPressure.Item2 < deadParams.MinArterialPressure.Item2)
                 messages.Add(
-                    $"Артериальное давление должно быть больше чем {deadParams.MinArterialPressure.ToCustomString()}");
+                    $"Артериальное давления ниже {deadParams.MinArterialPressure.ToCustomString()}мм рт ст");
             
             if (population.ArterialPressure.Item1 > deadParams.MaxArterialPressure.Item1 &&
                 population.ArterialPressure.Item2 > deadParams.MaxArterialPressure.Item2)
                 messages.Add(
-                    $"Артериальное давление должно быть меньше чем {deadParams.MinArterialPressure.ToCustomString()}");
+                    $"Артериальное давления выше {deadParams.MaxArterialPressure.ToCustomString()}мм рт ст");
             
             if (population.WaterInBody < deadParams.MinWaterInBody)
-                messages.Add($"Объем жидкости должен быть больше чем {deadParams.MinWaterInBody * 100}");
+                messages.Add($"Объем жидкости ниже {deadParams.MinWaterInBody * 100}%");
             
-            if (population.Radiation >= deadParams.MaxRadiationInBody)
-                messages.Add($"Радиации в организме должно быть меньше чем {deadParams.MaxRadiationInBody}");
+            // TODO: Может ли быть ниже? Ниже или равен.
+            if (population.BloodInBody < deadParams.MinBloodInBody)
+                messages.Add($"Объем крови ниже {deadParams.MinBloodInBody}Л");
+
+            // TODO: Больше? 
+            if (population.Radiation > deadParams.MaxRadiationInBody)
+                messages.Add($"Количество радиации в организме больше {deadParams.MaxRadiationInBody}мкЗв");
 
             return messages.Count != 0;
         }
