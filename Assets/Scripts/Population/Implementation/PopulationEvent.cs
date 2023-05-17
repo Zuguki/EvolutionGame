@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ComfortWeather;
+using Population.ComfortWeather;
 using Weather;
 
 namespace Population.Implementation

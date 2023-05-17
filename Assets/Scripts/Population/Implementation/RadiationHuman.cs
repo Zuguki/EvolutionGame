@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ComfortWeather;
-using ComfortWeather.Implementation;
 using UnityEngine;
 using Weather;
 

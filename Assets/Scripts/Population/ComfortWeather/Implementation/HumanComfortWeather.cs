@@ -1,4 +1,4 @@
-﻿namespace ComfortWeather.Implementation
+﻿namespace Population.ComfortWeather.Implementation
 {
     public class HumanComfortWeather : IComfortWeather
     {

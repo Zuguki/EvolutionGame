@@ -1,4 +1,4 @@
-﻿namespace ComfortWeather
+﻿namespace Population.ComfortWeather
 {
     public interface IComfortWeather
     {

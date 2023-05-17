@@ -1,5 +1,6 @@
 ﻿using System;
 using ComfortWeather;
+using Population.ComfortWeather;
 using UnityEditor.Experimental;
 using Weather;
 

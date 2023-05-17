@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ComfortWeather.Implementation;
 using Parameters;
+using Population.ComfortWeather.Implementation;
 using Population.Implementation.HumanPopulation;
 
 namespace Population.Implementation.ColdHumanPopulation
