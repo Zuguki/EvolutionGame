@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using ComfortWeather;
-
-namespace Weather
+﻿namespace Weather
 {
     public class Pressure
     {

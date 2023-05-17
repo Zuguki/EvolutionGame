@@ -7,12 +7,14 @@ using Population;
 using Population.Implementation.ColdHumanPopulation;
 using Population.Implementation.FireHumanPopulation;
 using Population.Implementation.HumanPopulation;
+using Population.Implementation.RadiationHumanPopulation;
 using TMPro;
 using UnityEngine;
 
 public class Program : MonoBehaviour
 {
-    public static readonly List<IPopulation> OpenPopulations = new() {new Human(), new ColdHuman(), new FireHuman()};
+    public static readonly List<IPopulation> OpenPopulations = new()
+        {new Human(), new ColdHuman(), new FireHuman(), new RadiationHuman()};
 
     public static readonly List<IUnionPopulation> TryOpenPopulations =
         new() { };
