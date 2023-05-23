@@ -6,6 +6,34 @@ namespace Population
 {
     public static class PopulationEvent
     {
+        public static bool TryAddPopulationCantBeMessage(out List<string> messages, IPopulationCantBe populationCantBe)
+        {
+            messages = new List<string>();
+            if (Temperature.Value <= populationCantBe.MinTemperature)
+                messages.Add($"Температура ниже {populationCantBe.MinTemperature}");
+            if (Temperature.Value >= populationCantBe.MaxTemperature)
+                messages.Add($"Температура выше {populationCantBe.MaxTemperature}");
+            
+            if (Pressure.Value <= populationCantBe.MinPressure)
+                messages.Add($"Давление ниже {populationCantBe.MinPressure}");
+            if (Pressure.Value >= populationCantBe.MaxPressure)
+                messages.Add($"Давление выше {populationCantBe.MaxPressure}");
+            
+            if (Radiation.Value >= populationCantBe.MaxRadiation)
+                messages.Add($"Радиация выше {populationCantBe.MaxRadiation}");
+            
+            if (AirQuality.Value >= populationCantBe.MaxAirQuality)
+                messages.Add($"Качество воздуха выше {populationCantBe.MaxAirQuality}");
+            
+            if (SoilPurity.Value <= populationCantBe.MinSoilPurity)
+                messages.Add($"Чистота почьвы ниже {populationCantBe.MinSoilPurity}");
+            
+            if (Noise.Value >= populationCantBe.MaxNoise)
+                messages.Add($"Шум выше {populationCantBe.MaxNoise}");
+
+            return messages.Count != 0;
+        }
+        
         public static bool TryAddDeadMessage(out List<string> messages, IPopulationParams population,
             IPopulationDeadParams deadParams)
         {

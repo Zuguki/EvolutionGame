@@ -30,7 +30,7 @@
         public float MaxSoilPurity => 0.98f;
         
         public float TemperatureWeather => 21;
-        public float Pressure => 760;
+        public float Pressure => 750;
         public float Radiation => 20;
         public float Humidity => 20;
         public float WindSpeed => 3;
