@@ -28,12 +28,10 @@ namespace Population
             if (population.WaterInBody < deadParams.MinWaterInBody)
                 messages.Add($"Объем жидкости ниже {deadParams.MinWaterInBody * 100}%");
             
-            // TODO: Может ли быть ниже? Ниже или равен.
-            if (population.BloodInBody < deadParams.MinBloodInBody)
+            if (population.BloodInBody <= deadParams.MinBloodInBody)
                 messages.Add($"Объем крови ниже {deadParams.MinBloodInBody}Л");
 
-            // TODO: Больше? 
-            if (population.Radiation > deadParams.MaxRadiationInBody)
+            if (population.Radiation >= deadParams.MaxRadiationInBody)
                 messages.Add($"Количество радиации в организме больше {deadParams.MaxRadiationInBody}мкЗв");
 
             return messages.Count != 0;

@@ -1,4 +1,5 @@
 ﻿using System;
+using Parameters;
 using Population.ComfortWeather;
 using Weather;
 
@@ -18,17 +19,20 @@ namespace Population.Implementation
 
         private const float BloodCoeff = 0.01f;
 
-        private double bnr = 0;
-        private double dnr = 0;
-        private readonly IComfortWeather comfortWeather;
-        private readonly IPopulationDeadParams deadParams;
-        private readonly IPopulationParams populationParams;
+        private double _bnr = 0;
+        private double _dnr = 0;
+        private readonly IComfortWeather _comfortWeather;
+        private readonly IPopulationDeadParams _deadParams;
+        private readonly IPopulationParams _populationParams;
+
+        // private double _hbz = Math.Pow(PopulationCount.Value, 2);
+        private double _hbz = PopulationCount.Value;
 
         public PopulationParamsUpdater(IPopulationParams populationParams, IComfortWeather comfortWeather, IPopulationDeadParams deadParams)
         {
-            this.populationParams = populationParams;
-            this.comfortWeather = comfortWeather;
-            this.deadParams = deadParams;
+            _populationParams = populationParams;
+            _comfortWeather = comfortWeather;
+            _deadParams = deadParams;
         }
 
         // T.T = Квл* Tокр + t
@@ -37,7 +41,16 @@ namespace Population.Implementation
 
         public (float, float) GetArterialPressure()
         {
-            // Закон, формула по которому изменяется параметр:
+            // Возможно допустимые значения(минимальное, максимальное):
+            //
+            // minArterialPressure = 70/60 мм рт ст
+            //
+            //     ArterialPressure = 120/80 мм рт ст
+            //
+            //     maxArterialPressure = 180/130 мм рт ст
+            //
+            //
+            //     Закон, формула по которому изменяется параметр:
             //
             // ArterialPressure = siastArterialPressure / diastArterialPressure , где 
             //
@@ -48,28 +61,38 @@ namespace Population.Implementation
             //
             // 40 <= d <= 50 - диапазон расчета систолического давления
             //
-            //
-            //
             //     если siastArterialPressure < 50, то siastArterialPressure = diastArterialPressure 
             //
             // siastArterialPressure = K * P - Kрег
             // где
             //
             //     K = 11/10 - коэффициент динамики давления
-            //     Kрег = 705 - коэффициент регуляции давления 
+            //     Kрег = 700 - коэффициент регуляции давления 
 
-            return (0, 0);
+            var k = 11 / (float) 10;
+            var kreg = 700;
+            var sistAt = 120;
+            var diastAt = 80;
+            var siastArterialPressure = k * Pressure.Value - kreg;
+
+            var diastArterialPressure = (siastArterialPressure - sistAt) / 2f + diastAt;
+            return (siastArterialPressure, diastArterialPressure);
         }
 
         public float GetWaterInBody()
         {
+            var kpv = 3;
+            var kn = 0.99;
+            var daysInYear = 365;
+            var kvl = 1 / (float) 2;
+            var s = PopulationCount.Value;
             // Кол-во жидкости = ⅗ * (ВЗ / КП^2) * 100
             // где:
             // ВЗ - водный запас 
             // НВЗ - начальный водный запас 
             //
             //
-            //     ВЗ = НВЗ- t(Кпв*КП – S*((КО*kн/365 + ВВ*kвл.вв/100))
+            // ВЗ = НВЗ- t(Кпв*КП – S*((КО*kн/365 + ВВ*kвл.вв/100))
             // где:             
             // НВЗ - начальный водный запас ПРИ ПЕРВОЙ ИТТЕРАЦИИ = КП^2
             // S - площадь, которую использует популяция 
@@ -82,7 +105,13 @@ namespace Population.Implementation
             //     Кпв = 3 - потребление воды на 1 индивида
             // t - время итерации
 
-            return 0;
+            var vz = _hbz - (kpv * PopulationCount.Value - PopulationCount.Value *
+                (Preciptiation.Value * kn / (float) daysInYear + Humidity.Value * kvl / 100));
+            // 21 500
+            
+            var result = (float) ((3 / (float) 5) * (vz / (float) _hbz));
+            _hbz = vz;
+            return result;
         }
 
         public float GetBloodInBody(IPopulationParams populationParams, IPopulationDeadParams deadParams)
@@ -104,60 +133,44 @@ namespace Population.Implementation
                 ? populationParams.BloodInBody * (1 - BloodCoeff)
                 : populationParams.BloodInBody * (1 * BloodCoeff);
         }
-        
-        public float GetRadiationInBody(float radiation)
+
+        public float GetRadiationInBody(IComfortWeather comfortWeather, float radiation)
         {
-            var r = Radiation.Value * 1 * (RadiationCoeff +
+            var r = Radiation.Value * (RadiationCoeff +
                                            ((Preciptiation.MaxValue - Preciptiation.Value) *
                                             ((SoilPurity.MaxValue - SoilPurity.Value) / SoilPurityCoeff)) /
                                            RegulationCoeff);
 
-            return radiation + r;
-
-            // R =  Rокр * t * (kвоз.р + ((MAXос - КО) * ((MAXчист.п - ЧП)/kвоз.п))/kрег)
-            // Радиация организма = HR + R, если (HR + R)/t >  MAXд.р. (мкЗв/с), иначе равна 0
-
-            // HR = 0 - начальная радиация (при первой итерации)
-            // R- действительная радиация
-            //     MAXос = 8000 - максимальное количество осадков
-            // MAXд.р.(внедрено) - максимальная допустимая радиация для популяции(брать из параметра популяции)
-            // kвоз.р = 0,96 - коэффициент воздействия радиации
-            // Rокр - радиация окружающей среды
-            // КО - количество осадков
-            // MAXчист.п = 0,98 - максимальная чистота почвы 
-            //     kрег = 50 - коэффициент регуляции
-            // kвоз.п = 16 - коэффицент воздействия почвы
-            // ЧП - чистота почвы
-            // t - время итерации
+            return radiation + (r > comfortWeather.MaxRadiation ? r : 0);
         }
 
         public long GetPopulationCount(long count)
         {
             UpdateBnrDnr();
-            return (long) (count * Math.Pow(Math.E, (bnr - dnr) / 365));
+            return (long) (count * Math.Pow(Math.E, (_bnr - _dnr) / 365));
         }
         
         private void UpdateBnrDnr()
         {
-            if (PopulationEvent.TryAddDeadMessage(out var list, populationParams, deadParams) && list.Count == 4)
+            if (PopulationEvent.TryAddDeadMessage(out var list, _populationParams, _deadParams) && list.Count == 4)
             {
-                bnr = 0;
-                dnr = 1_000;
+                _bnr = 0;
+                _dnr = 1_000;
             }
-            else if (PopulationEvent.TryAddDeadMessage(out _, populationParams, deadParams))
+            else if (PopulationEvent.TryAddDeadMessage(out _, _populationParams, _deadParams))
             {
-                bnr = 0.01;
-                dnr = 100;
+                _bnr = 0.01;
+                _dnr = 100;
             }
-            else if (PopulationEvent.TryAddDiscomfortParams(out _, comfortWeather))
+            else if (PopulationEvent.TryAddDiscomfortParams(out _, _comfortWeather))
             {
-                bnr = 0.015;
-                dnr = 0.015;
+                _bnr = 0.015;
+                _dnr = 0.015;
             }
             else
             {
-                bnr = 0.025;
-                dnr = 0.015;
+                _bnr = 0.025;
+                _dnr = 0.015;
             }
         }
     }

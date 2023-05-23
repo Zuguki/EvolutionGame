@@ -30,7 +30,7 @@ namespace Population.Implementation.RadiationHumanPopulation
             ArterialPressure = _populationParamsUpdater.GetArterialPressure();
             WaterInBody = _populationParamsUpdater.GetWaterInBody();
             BloodInBody = _populationParamsUpdater.GetBloodInBody(this, new RadiationHumanDeadParameters());
-            Radiation = _populationParamsUpdater.GetRadiationInBody(Radiation);
+            Radiation = _populationParamsUpdater.GetRadiationInBody(new RadiationHumanComfortWeather(), Radiation);
             Count = _populationParamsUpdater.GetPopulationCount(Count);
             
             PopulationEvent.TryAddDeadMessage(out var list, this, new RadiationHumanDeadParameters());

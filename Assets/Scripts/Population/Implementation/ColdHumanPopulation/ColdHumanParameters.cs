@@ -31,7 +31,7 @@ namespace Population.Implementation.ColdHumanPopulation
             ArterialPressure = _populationParamsUpdater.GetArterialPressure();
             WaterInBody = _populationParamsUpdater.GetWaterInBody();
             BloodInBody = _populationParamsUpdater.GetBloodInBody(this, new ColdHumanDeadParams());
-            Radiation = _populationParamsUpdater.GetRadiationInBody(Radiation);
+            Radiation = _populationParamsUpdater.GetRadiationInBody(new ColdHumanComfortWeather(), Radiation);
             Count = _populationParamsUpdater.GetPopulationCount(Count);
             
             PopulationEvent.TryAddDeadMessage(out var list, this, new ColdHumanDeadParams());

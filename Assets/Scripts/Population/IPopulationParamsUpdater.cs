@@ -1,4 +1,6 @@
-﻿namespace Population
+﻿using Population.ComfortWeather;
+
+namespace Population
 {
     public interface IPopulationParamsUpdater
     {
@@ -10,7 +12,7 @@
 
         float GetBloodInBody(IPopulationParams populationParams, IPopulationDeadParams deadParams);
 
-        float GetRadiationInBody(float radiation);
+        float GetRadiationInBody(IComfortWeather comfortWeather, float radiation);
 
         long GetPopulationCount(long count);
     }
