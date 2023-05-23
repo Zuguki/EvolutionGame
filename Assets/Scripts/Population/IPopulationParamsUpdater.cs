@@ -10,7 +10,7 @@ namespace Population
 
         float GetWaterInBody();
 
-        float GetBloodInBody(IPopulationParams populationParams, IPopulationDeadParams deadParams);
+        float GetBloodInBody(PopulationParams populationParams, IPopulationDeadParams deadParams);
 
         float GetRadiationInBody(IComfortWeather comfortWeather, float radiation);
 

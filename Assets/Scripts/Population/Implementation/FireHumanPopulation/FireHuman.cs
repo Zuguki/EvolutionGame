@@ -1,18 +1,31 @@
-﻿namespace Population.Implementation.FireHumanPopulation
+﻿using Population.ComfortWeather.Implementation;
+
+namespace Population.Implementation.FireHumanPopulation
 {
     public class FireHuman : IUnionPopulation
     {
         public string Name => "FireHuman";
         public IPopulationDescription Description { get; }
-        public IPopulationParams Parameters { get; }
+        public PopulationParams Parameters { get; }
         public IPopulationSprites Sprites { get; }
         public bool IsAlive => Parameters.Count != 0;
 
         public FireHuman()
         {
             Description = new FireHumanDescription();
-            Parameters = new FireHumanParameters();
             Sprites = new FireHumanSprites();
+            
+            var bodyTemperature = 37.8f;
+            var arterialPressure = (92f, 66f);
+            var waterInBody = .6f;
+            var radiation = 0;
+            var bloodInBody = 5;
+
+            var deadParams = new FireHumanDeadParams();
+            var comfortWeather = new FireHumanComfortWeather();
+            var populationCantBe = new FireHumanCantBe();
+            Parameters = new FireHumanParameters(bodyTemperature, arterialPressure, waterInBody, radiation, bloodInBody,
+                deadParams, comfortWeather, populationCantBe);
         }
         
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)

@@ -23,12 +23,12 @@ namespace Population.Implementation
         private double _dnr = 0;
         private readonly IComfortWeather _comfortWeather;
         private readonly IPopulationDeadParams _deadParams;
-        private readonly IPopulationParams _populationParams;
+        private readonly PopulationParams _populationParams;
 
         // private double _hbz = Math.Pow(PopulationCount.Value, 2);
         private double _hbz = PopulationCount.Value;
 
-        public PopulationParamsUpdater(IPopulationParams populationParams, IComfortWeather comfortWeather, IPopulationDeadParams deadParams)
+        public PopulationParamsUpdater(PopulationParams populationParams, IComfortWeather comfortWeather, IPopulationDeadParams deadParams)
         {
             _populationParams = populationParams;
             _comfortWeather = comfortWeather;
@@ -114,7 +114,7 @@ namespace Population.Implementation
             return result;
         }
 
-        public float GetBloodInBody(IPopulationParams populationParams, IPopulationDeadParams deadParams)
+        public float GetBloodInBody(PopulationParams populationParams, IPopulationDeadParams deadParams)
         {
             // Формула начинает работать, когда хоть один параметр находится в критическом положении.
             // Уменьшение: 
@@ -131,7 +131,7 @@ namespace Population.Implementation
 
             return PopulationEvent.TryAddDeadMessage(out _, populationParams, deadParams)
                 ? populationParams.BloodInBody * (1 - BloodCoeff)
-                : populationParams.BloodInBody * (1 * BloodCoeff);
+                : populationParams.BloodInBody * (1 + BloodCoeff);
         }
 
         public float GetRadiationInBody(IComfortWeather comfortWeather, float radiation)

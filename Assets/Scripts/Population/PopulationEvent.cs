@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Population.ComfortWeather;
+using UnityEngine;
 using Weather;
 
 namespace Population
@@ -34,7 +35,7 @@ namespace Population
             return messages.Count != 0;
         }
         
-        public static bool TryAddDeadMessage(out List<string> messages, IPopulationParams population,
+        public static bool TryAddDeadMessage(out List<string> messages, PopulationParams population,
             IPopulationDeadParams deadParams)
         {
             messages = new List<string>();
@@ -81,9 +82,9 @@ namespace Population
             if (Weather.Radiation.Value > comfortWeather.MaxRadiation)
                 messages.Add($"Радиация окружающей среды выше нормы: {comfortWeather.MaxRadiation}");
 
-            if (Humidity.Value < comfortWeather.MinHumidity)
+            if (Humidity.Value < comfortWeather.MinHumidity * 100)
                 messages.Add($"Влажность окружающей среды ниже нормы: {comfortWeather.MinHumidity}");
-            if (Humidity.Value > comfortWeather.MaxHumidity)
+            if (Humidity.Value > comfortWeather.MaxHumidity * 100)
                 messages.Add($"Влажность окружающей среды выше нормы: {comfortWeather.MaxHumidity}");
 
             if (WindSpeed.Value < comfortWeather.MinWindSpeed)
@@ -91,7 +92,7 @@ namespace Population
             if (WindSpeed.Value > comfortWeather.MaxWindSpeed)
                 messages.Add($"Скорость ветра окружающей среды выше нормы: {comfortWeather.MaxWindSpeed}");
 
-            if (Preciptiation.Value < comfortWeather.MinPressure)
+            if (Preciptiation.Value < comfortWeather.MinPreciptiation)
                 messages.Add($"Количество осадков окружающей среды ниже нормы: {comfortWeather.MinPreciptiation}");
             if (Preciptiation.Value > comfortWeather.MaxPreciptiation)
                 messages.Add($"Количество осадков окружающей среды выше нормы: {comfortWeather.MaxPreciptiation}");
@@ -111,6 +112,8 @@ namespace Population
             if (Noise.Value > comfortWeather.MaxNoise)
                 messages.Add($"Влажность окружающей среды выше нормы: {comfortWeather.MaxNoise}");
 
+            if (messages.Count != 0)
+                Debug.Log($"Параметры выходят за рамки: {string.Join(", ", messages)}");
             return messages.Count != 0;
         }
     }

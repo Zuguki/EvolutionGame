@@ -1,18 +1,31 @@
-﻿namespace Population.Implementation.RadiationHumanPopulation
+﻿using Population.ComfortWeather.Implementation;
+
+namespace Population.Implementation.RadiationHumanPopulation
 {
     public class RadiationHuman : IUnionPopulation
     {
         public string Name => "RadiationHuman";
         public IPopulationDescription Description { get; }
-        public IPopulationParams Parameters { get; }
+        public PopulationParams Parameters { get; }
         public IPopulationSprites Sprites { get; }
         public bool IsAlive => Parameters.Count != 0;
 
         public RadiationHuman()
         {
             Description = new RadiationHumanDescription();
-            Parameters = new RadiationHumanParameters();
             Sprites = new RadiationHumanSprite();
+            
+            var bodyTemperature = 37.2f;
+            var arterialPressure = (92f, 66f);
+            var waterInBody = .5f;
+            var radiation = 0;
+            var bloodInBody = 5;
+
+            var deadParams = new RadiationHumanDeadParameters();
+            var comfortWeather = new RadiationHumanComfortWeather();
+            var populationCantBe = new RadiationHumanCantBe();
+            Parameters = new RadiationHumanParameters(bodyTemperature, arterialPressure, waterInBody, radiation, bloodInBody,
+                deadParams, comfortWeather, populationCantBe);
         }
 
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)

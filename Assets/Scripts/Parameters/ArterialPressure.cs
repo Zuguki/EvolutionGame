@@ -12,8 +12,8 @@
         public static string Details3 =
             $"Минимальное значение: {MinValue.ToCustomString()}мм рт ст\nСреднее значение: {DefaultValue.ToCustomString()}мм рт ст\nМаксимальное значение: {MaxValue.ToCustomString()}мм рт ст";
         
-        public static (float, float) MinValue => (70, 60);
-        public static (float, float) MaxValue => (180, 130);
+        public static (float, float) MinValue => (37, 37);
+        public static (float, float) MaxValue => (213, 126.5f);
         public static (float, float) DefaultValue => (120, 80);
         public static (float, float) Value { get; set; }
 
