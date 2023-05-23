@@ -6,7 +6,8 @@
         public IPopulationDescription Description { get; }
         public IPopulationParams Parameters { get; }
         public IPopulationSprites Sprites { get; }
-        
+        public IPopulationCantBe PopulationCantBe { get; }
+
         public bool IsAlive => Parameters.Count > 0;
 
         public ColdHuman()
@@ -14,6 +15,7 @@
             Description = new ColdHumanDescription();
             Parameters = new ColdHumanParameters();
             Sprites = new ColdHumanSprites();
+            PopulationCantBe = new ColdHumanCantBe();
         }
         
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)
