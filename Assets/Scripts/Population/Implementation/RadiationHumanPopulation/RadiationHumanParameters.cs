@@ -35,6 +35,11 @@ namespace Population.Implementation.RadiationHumanPopulation
             
             PopulationEvent.TryAddDeadMessage(out var list, this, new RadiationHumanDeadParameters());
             DeadMessages = DeadMessages.Union(list).ToList();
+            
+            if (!PopulationEvent.TryAddPopulationCantBeMessage(out list, new RadiationHumanCantBe())) 
+                return;
+            DeadMessages = DeadMessages.Union(list).ToList();
+            Count = 0;
         }
     }
 }

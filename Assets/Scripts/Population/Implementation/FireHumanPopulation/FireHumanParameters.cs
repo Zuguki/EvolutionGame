@@ -35,6 +35,11 @@ namespace Population.Implementation.FireHumanPopulation
             
             PopulationEvent.TryAddDeadMessage(out var list, this, new FireHumanDeadParams());
             DeadMessages = DeadMessages.Union(list).ToList();
+            
+            if (!PopulationEvent.TryAddPopulationCantBeMessage(out list, new FireHumanCantBe())) 
+                return;
+            DeadMessages = DeadMessages.Union(list).ToList();
+            Count = 0;
         }
     }
 }

@@ -36,6 +36,11 @@ namespace Population.Implementation.ColdHumanPopulation
             
             PopulationEvent.TryAddDeadMessage(out var list, this, new ColdHumanDeadParams());
             DeadMessages = DeadMessages.Union(list).ToList();
+            
+            if (!PopulationEvent.TryAddPopulationCantBeMessage(out list, new ColdHumanCantBe()))
+                return;
+            DeadMessages = DeadMessages.Union(list).ToList();
+            Count = 0;
         }
     }
 }
