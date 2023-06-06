@@ -11,15 +11,29 @@
 
         public static string Details3 =
             $"Минимальное значение: {MinValue}м/с\nСреднее значение: {DefaultValue}м/с\nМаксимальное значение: {MaxValue}м/с";
-        
-        public static float MinValue => 0;
-        public static float MaxValue => 80;
-        public static float DefaultValue => 4;
-        public static float Value { get; set; }
+
+        private static float _value;
 
         static WindSpeed()
         {
             Value = DefaultValue;
+        }
+        
+        public static float MinValue => 0;
+        public static float MaxValue => 80;
+        public static float DefaultValue => 4;
+        public static float Value
+        {
+            get => _value;
+            set
+            {
+                if (value >= MaxValue)
+                    _value = MaxValue;
+                else if (value <= MinValue)
+                    _value = MinValue;
+                else
+                    _value = value;
+            }
         }
     }
 }

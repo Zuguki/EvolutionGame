@@ -12,8 +12,8 @@
         public static string Details3 =
             $"Минимальное значение: {MinValue}°C\nСреднее значение: {DefaultValue}°C\nМаксимальное значение: {MaxValue}°C";
 
-        public static float MinValue => 26;
-        public static float MaxValue => 42;
+        public static float MinValue => 0;
+        public static float MaxValue => 100;
         public static float DefaultValue => 36.6f;
         public static float Value { get; set; }
 

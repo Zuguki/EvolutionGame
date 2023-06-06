@@ -1,5 +1,4 @@
 using Population;
-using Population.Implementation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

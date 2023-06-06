@@ -12,8 +12,8 @@
         public static string Details3 =
             $"Минимальное значение: {MinValue * 100}%\nСреднее значение: {DefaultValue * 100}%\nМаксимальное значение: {MaxValue * 100}%";
 
-        public static float MinValue => 0.3f;
-        public static float MaxValue => 0.75f;
+        public static float MinValue => 0f;
+        public static float MaxValue => 1f;
         public static float DefaultValue => 0.6f;
         public static float Value { get; set; }
 

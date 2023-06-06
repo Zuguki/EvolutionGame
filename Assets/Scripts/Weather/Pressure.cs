@@ -11,15 +11,29 @@
 
         public static string Details3 =
             $"Минимальное значение: {MinValue}мм рт ст\nСреднее значение: {DefaultValue}мм рт ст\nМаксимальное значение: {MaxValue}мм рт ст";
+
+        private static float _value;
+        
+        static Pressure()
+        {
+            Value = DefaultValue;
+        }
         
         public static float MinValue => 700;
         public static float MaxValue => 800;
         public static float DefaultValue => 750;
-        public static float Value { get; set; }
-
-        static Pressure()
+        public static float Value
         {
-            Value = DefaultValue;
+            get => _value;
+            set
+            {
+                if (value >= MaxValue)
+                    _value = MaxValue;
+                else if (value <= MinValue)
+                    _value = MinValue;
+                else
+                    _value = value;
+            }
         }
     }
 }

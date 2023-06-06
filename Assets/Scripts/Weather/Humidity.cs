@@ -11,15 +11,29 @@
 
         public static string Details3 =
             $"Минимальное значение: {MinValue}%\nСреднее значение: {DefaultValue}%\nМаксимальное значение: {MaxValue}%";
+
+        private static float _value;
+        
+        static Humidity()
+        {
+            Value = DefaultValue;
+        }
         
         public static float MinValue => 0;
         public static float MaxValue => 100;
         public static float DefaultValue => 60;
-        public static float Value { get; set; }
-
-        static Humidity()
+        public static float Value
         {
-            Value = DefaultValue;
+            get => _value;
+            set
+            {
+                if (value >= MaxValue)
+                    _value = MaxValue;
+                else if (value <= MinValue)
+                    _value = MinValue;
+                else
+                    _value = value;
+            }
         }
     }
 }

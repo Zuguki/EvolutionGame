@@ -13,7 +13,7 @@
             $"Минимальное значение: {MinValue}мкЗв / с\nСреднее значение: {DefaultValue}мкЗв / с\nМаксимальное значение: {MaxValue}мкЗв / с";
 
         public static float MinValue => 0;
-        public static float MaxValue => 7_000_000;
+        public static float MaxValue => 10_000_000;
         public static float DefaultValue => 20;
         public static float Value { get; set; }
 

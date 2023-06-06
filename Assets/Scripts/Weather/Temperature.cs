@@ -12,14 +12,28 @@
         public static string Details3 =
             $"Минимальное значение: {MinValue}°C\nСреднее значение: {DefaultValue}°C\nМаксимальное значение: {MaxValue}°C";
 
-        public static float MinValue => -82.2f;
-        public static float MaxValue => 56.7f;
-        public static float DefaultValue => 15;
-        public static float Value { get; set; }
+        private static float _value;
         
         static Temperature()
         {
             Value = DefaultValue;
+        }
+        
+        public static float MinValue => -82.2f;
+        public static float MaxValue => 56.7f;
+        public static float DefaultValue => 15;
+        public static float Value
+        {
+            get => _value;
+            set
+            {
+                if (value >= MaxValue)
+                    _value = MaxValue;
+                else if (value <= MinValue)
+                    _value = MinValue;
+                else
+                    _value = value;
+            }
         }
     }
 }

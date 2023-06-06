@@ -1,4 +1,5 @@
-﻿using Population.ComfortWeather.Implementation;
+﻿using Parameters;
+using Population.ComfortWeather.Implementation;
 
 namespace Population.Implementation.RadiationHumanPopulation
 {
@@ -8,6 +9,7 @@ namespace Population.Implementation.RadiationHumanPopulation
         public IPopulationDescription Description { get; }
         public PopulationParams Parameters { get; }
         public IPopulationSprites Sprites { get; }
+        public bool IsNew { get; set; } = true;
         public bool IsAlive => Parameters.Count != 0;
 
         public RadiationHuman()
@@ -24,8 +26,9 @@ namespace Population.Implementation.RadiationHumanPopulation
             var deadParams = new RadiationHumanDeadParameters();
             var comfortWeather = new RadiationHumanComfortWeather();
             var populationCantBe = new RadiationHumanCantBe();
+            var comfortParams = new RadiationHumanComfortParams();
             Parameters = new RadiationHumanParameters(bodyTemperature, arterialPressure, waterInBody, radiation, bloodInBody,
-                deadParams, comfortWeather, populationCantBe);
+                PopulationCount.Value, deadParams, comfortWeather, populationCantBe, comfortParams);
         }
 
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)

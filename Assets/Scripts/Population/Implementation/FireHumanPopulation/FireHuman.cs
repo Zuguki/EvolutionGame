@@ -1,4 +1,5 @@
-﻿using Population.ComfortWeather.Implementation;
+﻿using Parameters;
+using Population.ComfortWeather.Implementation;
 
 namespace Population.Implementation.FireHumanPopulation
 {
@@ -8,6 +9,7 @@ namespace Population.Implementation.FireHumanPopulation
         public IPopulationDescription Description { get; }
         public PopulationParams Parameters { get; }
         public IPopulationSprites Sprites { get; }
+        public bool IsNew { get; set; } = true;
         public bool IsAlive => Parameters.Count != 0;
 
         public FireHuman()
@@ -24,8 +26,9 @@ namespace Population.Implementation.FireHumanPopulation
             var deadParams = new FireHumanDeadParams();
             var comfortWeather = new FireHumanComfortWeather();
             var populationCantBe = new FireHumanCantBe();
+            var comfortParams = new FireHumanComfortParams();
             Parameters = new FireHumanParameters(bodyTemperature, arterialPressure, waterInBody, radiation, bloodInBody,
-                deadParams, comfortWeather, populationCantBe);
+                PopulationCount.Value, deadParams, comfortWeather, populationCantBe, comfortParams);
         }
         
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)

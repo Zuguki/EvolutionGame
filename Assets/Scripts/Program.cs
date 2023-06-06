@@ -23,8 +23,8 @@ public class Program : MonoBehaviour
     
     [SerializeField] private GameObject populationPanel;
     [SerializeField] private GameObject advancePopulationPanel;
-    
-    private static bool _inProcess;
+
+    public static bool InProcess { get; private set; }
 
     private TextMeshProUGUI _bodyTemperature;
     private TextMeshProUGUI _arterialPressure;
@@ -49,18 +49,18 @@ public class Program : MonoBehaviour
             NeedsUpdateUI = false;
         }
         
-        if (!_inProcess || _isCoroutineRunning)
+        if (!InProcess || _isCoroutineRunning)
             return;
 
         if (Population is null)
         {
             InfoChecker.ChangeSimpleItem("Сначала стоит выбрать популяцию");
-            _inProcess = false;
+            InProcess = false;
             return;
         }
         
         CheckGameOver();
-        if (!_inProcess)
+        if (!InProcess)
             return;
         
         StartCoroutine(ChangeDay());
@@ -77,7 +77,7 @@ public class Program : MonoBehaviour
             if (tryOpenPopulation.TryOpen(Population, out var population))
             {
                 OpenPopulations.Add(population);
-                _inProcess = false;
+                InProcess = false;
                 InfoChecker.ChangeSimpleItem($"Вы открыли новую популяцию: {population.Name}");
                 TimeController.CurrentDay = 0;
             }
@@ -88,7 +88,7 @@ public class Program : MonoBehaviour
     {
         if (!Population.IsAlive)
         {
-            _inProcess = false;
+            InProcess = false;
             InfoChecker.ChangeMediumItem("Популяция погибла", string.Join('\n', Population.Parameters.DeadMessages));
             // InfoChecker.ChangeSimpleItem("Популяция погибла из за: " + string.Join(',', Population.Parameters.DeadMessages));
 
@@ -96,7 +96,7 @@ public class Program : MonoBehaviour
             OpenPopulations.Remove(oldPopulation);
             
             if (Population is not ITryOpenPopulation)
-                OpenPopulations.Add(new Human());
+                OpenPopulations.Insert(0, new Human());
             
             Population = null;
             UpdateCurrentPopulation.CurrentPopulation = null;
@@ -105,7 +105,7 @@ public class Program : MonoBehaviour
         }
         else if (TimeController.DaysLeft <= 0)
         {
-            _inProcess = false;
+            InProcess = false;
             InfoChecker.ChangeSimpleItem("Срок итераций подошел к концу");
             TimeController.CurrentDay = 0;
         }
@@ -128,7 +128,7 @@ public class Program : MonoBehaviour
         _isCoroutineRunning = true;
         TimeController.CurrentDay += 1;
         Population.Parameters.DaysAlive += 1;
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.01f);
         _isCoroutineRunning = false;
     }
 
@@ -148,6 +148,6 @@ public class Program : MonoBehaviour
 
     public static void Run()
     {
-        _inProcess = true;
+        InProcess = true;
     }
 }

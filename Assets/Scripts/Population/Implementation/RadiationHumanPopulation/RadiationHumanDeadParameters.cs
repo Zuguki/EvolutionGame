@@ -11,9 +11,10 @@ namespace Population.Implementation.RadiationHumanPopulation
         public (float, float) MaxArterialPressure => (147, 97);
 
         public float MinWaterInBody => 0.3f;
-        public float MaxWaterInBody => 1f;
+        public float MaxWaterInBody => .75f;
         
         public float MinBloodInBody => 3;
+        public float MaxBloodInBody => 5;
 
         public float MinRadiationInBody => 0;
         public float MaxRadiationInBody => 9 * (float) Math.Pow(10, 6);

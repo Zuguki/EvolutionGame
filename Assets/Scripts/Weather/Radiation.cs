@@ -11,15 +11,29 @@
 
         public static string Details3 =
             $"Минимальное значение: {MinValue}мЗв/д\nСреднее значение: {DefaultValue}мЗв/д\nМаксимальное значение: {MaxValue}мЗв/д";
+
+        private static float _value;
+        
+        static Radiation()
+        {
+            Value = DefaultValue;
+        }
         
         public static float MinValue => 0;
         public static float MaxValue => 7_000_000;
         public static float DefaultValue => 0;
-        public static float Value { get; set; }
-
-        static Radiation()
+        public static float Value
         {
-            Value = DefaultValue;
+            get => _value;
+            set
+            {
+                if (value >= MaxValue)
+                    _value = MaxValue;
+                else if (value <= MinValue)
+                    _value = MinValue;
+                else
+                    _value = value;
+            }
         }
     }
 }

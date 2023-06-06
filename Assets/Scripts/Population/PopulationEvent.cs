@@ -39,22 +39,22 @@ namespace Population
             IPopulationDeadParams deadParams)
         {
             messages = new List<string>();
-            if (population.BodyTemperature < deadParams.MinTemperature)
+            if (population.BodyTemperature <= deadParams.MinTemperature)
                 messages.Add($"Температура тела ниже {deadParams.MinTemperature}°C");
-            if (population.BodyTemperature > deadParams.MaxTemperature)
+            if (population.BodyTemperature >= deadParams.MaxTemperature)
                 messages.Add($"Температура тела выше {deadParams.MaxTemperature}°C");
 
-            if (population.ArterialPressure.Item1 < deadParams.MinArterialPressure.Item1 &&
-                population.ArterialPressure.Item2 < deadParams.MinArterialPressure.Item2)
+            if (population.ArterialPressure.Item1 <= deadParams.MinArterialPressure.Item1 &&
+                population.ArterialPressure.Item2 <= deadParams.MinArterialPressure.Item2)
                 messages.Add(
                     $"Артериальное давление ниже {deadParams.MinArterialPressure.ToCustomString()}мм рт ст");
             
-            if (population.ArterialPressure.Item1 > deadParams.MaxArterialPressure.Item1 &&
-                population.ArterialPressure.Item2 > deadParams.MaxArterialPressure.Item2)
+            if (population.ArterialPressure.Item1 >= deadParams.MaxArterialPressure.Item1 &&
+                population.ArterialPressure.Item2 >= deadParams.MaxArterialPressure.Item2)
                 messages.Add(
                     $"Артериальное давление выше {deadParams.MaxArterialPressure.ToCustomString()}мм рт ст");
             
-            if (population.WaterInBody < deadParams.MinWaterInBody)
+            if (population.WaterInBody <= deadParams.MinWaterInBody)
                 messages.Add($"Объем жидкости ниже {deadParams.MinWaterInBody * 100}%");
             
             if (population.BloodInBody <= deadParams.MinBloodInBody)
@@ -66,54 +66,37 @@ namespace Population
             return messages.Count != 0;
         }
 
-        public static bool TryAddDiscomfortParams(out List<string> messages, IComfortWeather comfortWeather)
+        public static bool TryAddDiscomfortParams(out List<string> messages, PopulationParams population,
+            IComfortParams comfortParams)
         {
             messages = new List<string>();
-            if (Temperature.Value < comfortWeather.MinTemperature)
-                messages.Add($"Температура окружающей среды ниже нормы: {comfortWeather.MinTemperature}");
-            if (Temperature.Value > comfortWeather.MaxTemperature)
-                messages.Add($"Температура окружающей среды выше нормы: {comfortWeather.MaxTemperature}");
+            if (population.BodyTemperature <= comfortParams.MinTemperature)
+                messages.Add($"Температура тела ниже {comfortParams.MinTemperature}°C");
+            if (population.BodyTemperature >= comfortParams.MaxTemperature)
+                messages.Add($"Температура тела выше {comfortParams.MaxTemperature}°C");
 
-            if (Pressure.Value < comfortWeather.MinPressure)
-                messages.Add($"Атмосферное давление окружающей среды ниже нормы: {comfortWeather.MinPressure}");
-            if (Pressure.Value > comfortWeather.MaxPressure)
-                messages.Add($"Атмосферное давление окружающей среды выше нормы: {comfortWeather.MaxPressure}");
+            if (population.ArterialPressure.Item1 <= comfortParams.MinArterialPressure.Item1 &&
+                population.ArterialPressure.Item2 <= comfortParams.MinArterialPressure.Item2)
+                messages.Add(
+                    $"Артериальное давление ниже {comfortParams.MinArterialPressure.ToCustomString()}мм рт ст");
 
-            if (Weather.Radiation.Value > comfortWeather.MaxRadiation)
-                messages.Add($"Радиация окружающей среды выше нормы: {comfortWeather.MaxRadiation}");
+            if (population.ArterialPressure.Item1 >= comfortParams.MaxArterialPressure.Item1 &&
+                population.ArterialPressure.Item2 >= comfortParams.MaxArterialPressure.Item2)
+                messages.Add(
+                    $"Артериальное давление выше {comfortParams.MaxArterialPressure.ToCustomString()}мм рт ст");
 
-            if (Humidity.Value < comfortWeather.MinHumidity * 100)
-                messages.Add($"Влажность окружающей среды ниже нормы: {comfortWeather.MinHumidity}");
-            if (Humidity.Value > comfortWeather.MaxHumidity * 100)
-                messages.Add($"Влажность окружающей среды выше нормы: {comfortWeather.MaxHumidity}");
+            if (population.WaterInBody <= comfortParams.MinWaterInBody)
+                messages.Add($"Объем жидкости ниже {comfortParams.MinWaterInBody * 100}%");
 
-            if (WindSpeed.Value < comfortWeather.MinWindSpeed)
-                messages.Add($"Скорость ветра окружающей среды ниже нормы: {comfortWeather.MinWindSpeed}");
-            if (WindSpeed.Value > comfortWeather.MaxWindSpeed)
-                messages.Add($"Скорость ветра окружающей среды выше нормы: {comfortWeather.MaxWindSpeed}");
+            if (population.BloodInBody <= comfortParams.MinBloodInBody)
+                messages.Add($"Объем крови ниже {comfortParams.MinBloodInBody}Л");
 
-            if (Preciptiation.Value < comfortWeather.MinPreciptiation)
-                messages.Add($"Количество осадков окружающей среды ниже нормы: {comfortWeather.MinPreciptiation}");
-            if (Preciptiation.Value > comfortWeather.MaxPreciptiation)
-                messages.Add($"Количество осадков окружающей среды выше нормы: {comfortWeather.MaxPreciptiation}");
-
-            if (AirQuality.Value < comfortWeather.MinAirQuality)
-                messages.Add($"Качество воздуха окружающей среды ниже нормы: {comfortWeather.MinAirQuality}");
-            if (AirQuality.Value > comfortWeather.MaxAirQuality)
-                messages.Add($"Качество воздуха окружающей среды выше нормы: {comfortWeather.MaxAirQuality}");
-
-            if (SoilPurity.Value < comfortWeather.MinSoilPurity)
-                messages.Add($"Чистота почвы окружающей среды ниже нормы: {comfortWeather.MinSoilPurity}");
-            if (SoilPurity.Value > comfortWeather.MaxSoilPurity)
-                messages.Add($"Чистота почвы окружающей среды выше нормы: {comfortWeather.MaxSoilPurity}");
-
-            if (Noise.Value < comfortWeather.MinNoise)
-                messages.Add($"Влажность окружающей среды ниже нормы: {comfortWeather.MinNoise}");
-            if (Noise.Value > comfortWeather.MaxNoise)
-                messages.Add($"Влажность окружающей среды выше нормы: {comfortWeather.MaxNoise}");
-
+            if (population.Radiation / population.DaysAlive >= comfortParams.MaxRadiationInBody)
+                messages.Add($"Количество радиации в организме больше {comfortParams.MaxRadiationInBody}мкЗв");
+            
             if (messages.Count != 0)
                 Debug.Log($"Параметры выходят за рамки: {string.Join(", ", messages)}");
+            
             return messages.Count != 0;
         }
     }

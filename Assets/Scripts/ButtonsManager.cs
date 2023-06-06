@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonsManager : MonoBehaviour
 {
+    [SerializeField] private GameObject populationCountSettings;
     [SerializeField] private GameObject weatherSettingsObject;
     [SerializeField] private GameObject timeLineObject;
     [SerializeField] private GameObject populationMenu;
@@ -14,12 +15,24 @@ public class ButtonsManager : MonoBehaviour
     
     public void ChangeTimeLineSettingsActiveStatus() => timeLineObject.SetActive(!timeLineObject.activeSelf);
 
+    public void ChangePopulationCountSettings()
+    {
+        populationCountSettings.SetActive(!populationCountSettings.activeSelf);
+        Program.Population.IsNew = false;
+        Program.NeedsUpdateUI = true;
+    }
+
     public void ChangePopulationMenuActiveStatus()
     {
         if (populationMenu.activeSelf)
+        {
             DrawPopulationMenu.DestroyObjects();
+            if (Program.Population is not null && Program.Population.IsNew)
+                populationCountSettings.SetActive(true);
+        }
         else
             DrawPopulationMenu.DrawObjects();
+        
         populationMenu.SetActive(!populationMenu.activeSelf);  
     }
 

@@ -12,14 +12,28 @@
         public static string Details3 =
             $"Минимальное значение: {MinValue}°C\nСреднее значение: {DefaultValue}°C\nМаксимальное значение: {MaxValue}°C";
 
-        public static int MinValue => 1;
-        public static long MaxValue => 10_000_000_000;
-        public static int DefaultValue => 1_000_000;
-        public static long Value { get; set; }
+        private static long _value;
 
         static PopulationCount()
         {
             Value = DefaultValue;
+        }
+        
+        public static int MinValue => 1;
+        public static long MaxValue => 10_000_000_000;
+        public static int DefaultValue => 1_000_000;
+        public static long Value
+        {
+            get => _value;
+            set
+            {
+                if (value >= MaxValue)
+                    _value = MaxValue;
+                else if (value <= MinValue)
+                    _value = MinValue;
+                else
+                    _value = value;
+            }
         }
     }
 }

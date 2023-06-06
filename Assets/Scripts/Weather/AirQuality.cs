@@ -2,6 +2,7 @@
 {
     public static class AirQuality
     {
+        
         public static string Title = "Качество воздуха";
 
         public static string Details1 =
@@ -12,14 +13,28 @@
         public static string Details3 =
             $"Минимальное значение: {MinValue}AQI\nСреднее значение: {DefaultValue}AQI\nМаксимальное значение: {MaxValue}AQI";
         
-        public static float MinValue => 0;
-        public static float MaxValue => 500;
-        public static float DefaultValue => 90;
-        public static float Value { get; set; }
-
+        private static float _value;
+        
         static AirQuality()
         {
             Value = DefaultValue;
+        }
+        
+        public static float MinValue => 0;
+        public static float MaxValue => 500;
+        public static float DefaultValue => 90;
+        public static float Value
+        {
+            get => _value;
+            set
+            {
+                if (value >= MaxValue)
+                    _value = MaxValue;
+                else if (value <= MinValue)
+                    _value = MinValue;
+                else
+                    _value = value;
+            }
         }
     }
 }

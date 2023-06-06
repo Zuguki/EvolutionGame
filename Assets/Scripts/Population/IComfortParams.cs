@@ -1,6 +1,6 @@
 ﻿namespace Population
 {
-    public interface IPopulationDeadParams
+    public interface IComfortParams
     {
         float MinTemperature { get; }
         float MaxTemperature { get; }

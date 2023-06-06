@@ -11,15 +11,29 @@
 
         public static string Details3 =
             $"Минимальное значение: {MinValue}мм/год\nСреднее значение: {DefaultValue}мм/год\nМаксимальное значение: {MaxValue}мм/год";
-        
-        public static float MinValue => 100;
-        public static float MaxValue => 8000;
-        public static float DefaultValue => 1000;
-        public static float Value { get; set; }
+
+        private static float _value;
 
         static Preciptiation()
         {
             Value = DefaultValue;
+        }
+        
+        public static float MinValue => 100;
+        public static float MaxValue => 8000;
+        public static float DefaultValue => 1000;
+        public static float Value
+        {
+            get => _value;
+            set
+            {
+                if (value >= MaxValue)
+                    _value = MaxValue;
+                else if (value <= MinValue)
+                    _value = MinValue;
+                else
+                    _value = value;
+            }
         }
     }
 }

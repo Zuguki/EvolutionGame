@@ -1,4 +1,5 @@
 ﻿
+using Parameters;
 using Population.ComfortWeather.Implementation;
 
 namespace Population.Implementation.HumanPopulation
@@ -9,6 +10,7 @@ namespace Population.Implementation.HumanPopulation
         public IPopulationDescription Description { get; }
         public PopulationParams Parameters { get; }
         public IPopulationSprites Sprites { get; }
+        public bool IsNew { get; set; } = true;
 
         public bool IsAlive => Parameters.Count > 0;
         
@@ -26,8 +28,9 @@ namespace Population.Implementation.HumanPopulation
             var deadParams = new HumanDeadParams();
             var comfortWeather = new HumanComfortWeather();
             var populationCantBe = new HumanCantBe();
+            var comfortParams = new HumanComfortParams();
             Parameters = new HumanParams(bodyTemperature, arterialPressure, waterInBody, radiation, bloodInBody,
-                deadParams, comfortWeather, populationCantBe);
+                PopulationCount.Value, deadParams, comfortWeather, populationCantBe, comfortParams);
         }
     }
 }
