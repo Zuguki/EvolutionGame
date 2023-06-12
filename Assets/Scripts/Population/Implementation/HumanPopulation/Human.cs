@@ -6,7 +6,7 @@ namespace Population.Implementation.HumanPopulation
 {
     public class Human : IPopulation
     {
-        public string Name => "Human";
+        public string Name => "Человек";
         public IPopulationDescription Description { get; }
         public PopulationParams Parameters { get; }
         public IPopulationSprites Sprites { get; }

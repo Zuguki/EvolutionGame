@@ -15,5 +15,7 @@ namespace Population.Implementation.HumanPopulation
         public float MinSoilPurity => 0.7f;
 
         public float MaxNoise => 150;
+
+        public float MaxWindSpeed => 50;
     }
 }

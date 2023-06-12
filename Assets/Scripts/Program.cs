@@ -14,10 +14,10 @@ using UnityEngine;
 public class Program : MonoBehaviour
 {
     public static readonly List<IPopulation> OpenPopulations = new()
-        {new Human(), new ColdHuman(), new FireHuman(), new RadiationHuman()};
+        {new Human()};
 
     public static readonly List<IUnionPopulation> TryOpenPopulations =
-        new() { };
+        new() { new ColdHuman(), new FireHuman(), new RadiationHuman() };
     public static IPopulation Population;
     public static bool NeedsUpdateUI;
     
@@ -67,6 +67,7 @@ public class Program : MonoBehaviour
         Population.Parameters.UpdateParams();
         UpdateUIParams();
         TryOpenNewPopulation();
+        UpdateCurrentPopulation.NeedsUpdatePopulation = true;
     }
 
     private void TryOpenNewPopulation()
@@ -89,7 +90,7 @@ public class Program : MonoBehaviour
         if (!Population.IsAlive)
         {
             InProcess = false;
-            InfoChecker.ChangeMediumItem("Популяция погибла", string.Join('\n', Population.Parameters.DeadMessages));
+            InfoChecker.ChangeMediumItem("Популяция погибла", $"Количество пройденных дней: {Population.Parameters.DaysAlive}\n" + string.Join('\n', Population.Parameters.DeadMessages));
             // InfoChecker.ChangeSimpleItem("Популяция погибла из за: " + string.Join(',', Population.Parameters.DeadMessages));
 
             var oldPopulation = OpenPopulations.Find(population => population == Population);
@@ -128,7 +129,7 @@ public class Program : MonoBehaviour
         _isCoroutineRunning = true;
         TimeController.CurrentDay += 1;
         Population.Parameters.DaysAlive += 1;
-        yield return new WaitForSeconds(.01f);
+        yield return new WaitForSeconds(.05f);
         _isCoroutineRunning = false;
     }
 

@@ -23,13 +23,15 @@ public class InfoParamsManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI populationDetails2;
     [SerializeField] private TextMeshProUGUI populationDetails3;
 
-    public void ChangeFactorUiStatus() => ChangeUiActiveStatus(factorUi);
+    public void ChangeFactorUiStatus() => ChangeUiActiveStatus(factorUi);   
     public void ChangeParameterUiStatus() => ChangeUiActiveStatus(parameterUi);
     public void ChangePopulationUiStatus() => ChangeUiActiveStatus(populationUi);
 
     public void ShowPopulationDescription()
     {
-        ChangeUiActiveStatus(populationUi);
+        factorUi.SetActive(false);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(true);
         
         var population = Program.Population;
         if (population is null)
@@ -50,7 +52,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowArterialPressureDescription()
     {
-        ChangeUiActiveStatus(parameterUi);
+        factorUi.SetActive(false);
+        populationUi.SetActive(false);
+        parameterUi.SetActive(true);
 
         parameterTitle.text = ArterialPressure.Title;
         parameterDetails1.text = ArterialPressure.Details1;
@@ -60,7 +64,9 @@ public class InfoParamsManager : MonoBehaviour
     
     public void ShowBloodInBodyDescription()
     {
-        ChangeUiActiveStatus(parameterUi);
+        factorUi.SetActive(false);
+        parameterUi.SetActive(true);
+        populationUi.SetActive(false);
 
         parameterTitle.text = BloodInBody.Title;
         parameterDetails1.text = BloodInBody.Details1;
@@ -70,7 +76,9 @@ public class InfoParamsManager : MonoBehaviour
     
     public void ShowBodyTemperatureDescription()
     {
-        ChangeUiActiveStatus(parameterUi);
+        factorUi.SetActive(false);
+        parameterUi.SetActive(true);
+        populationUi.SetActive(false);
 
         parameterTitle.text = BodyTemperature.Title;
         parameterDetails1.text = BodyTemperature.Details1;
@@ -80,7 +88,9 @@ public class InfoParamsManager : MonoBehaviour
     
     public void ShowRadiationInBodyDescription()
     {
-        ChangeUiActiveStatus(parameterUi);
+        factorUi.SetActive(false);
+        populationUi.SetActive(false);
+        parameterUi.SetActive(true);
 
         parameterTitle.text = RadiationInBody.Title;
         parameterDetails1.text = RadiationInBody.Details1;
@@ -90,7 +100,9 @@ public class InfoParamsManager : MonoBehaviour
     
     public void ShowWaterInBodyDescription()
     {
-        ChangeUiActiveStatus(parameterUi);
+        factorUi.SetActive(false);
+        populationUi.SetActive(false);
+        parameterUi.SetActive(true);
 
         parameterTitle.text = WaterInBody.Title;
         parameterDetails1.text = WaterInBody.Details1;
@@ -100,7 +112,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowTemperatureDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
         factorTitle.text = Temperature.Title;
         factorDetails1.text = Temperature.Details1;
@@ -110,7 +124,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowHumidityDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
         factorTitle.text = Humidity.Title;
         factorDetails1.text = Humidity.Details1;
@@ -120,7 +136,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowWindSpeedDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
         factorTitle.text = WindSpeed.Title;
         factorDetails1.text = WindSpeed.Details1;
@@ -130,7 +148,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowPressureDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
         factorTitle.text = Pressure.Title;
         factorDetails1.text = Pressure.Details1;
@@ -140,7 +160,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowRadiationDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
         factorTitle.text = Radiation.Title;
         factorDetails1.text = Radiation.Details1;
@@ -150,7 +172,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowPreciptiationDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
 
         factorTitle.text = Preciptiation.Title;
@@ -161,7 +185,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowAirQualityDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
         factorTitle.text = AirQuality.Title;
         factorDetails1.text = AirQuality.Details1;
@@ -171,7 +197,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowNoiseDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
         factorTitle.text = Noise.Title;
         factorDetails1.text = Noise.Details1;
@@ -181,7 +209,9 @@ public class InfoParamsManager : MonoBehaviour
 
     public void ShowSoilPurityDescription()
     {
-        ChangeUiActiveStatus(factorUi);
+        parameterUi.SetActive(false);
+        populationUi.SetActive(false);
+        factorUi.SetActive(true);
 
         factorTitle.text = SoilPurity.Title;
         factorDetails1.text = SoilPurity.Details1;

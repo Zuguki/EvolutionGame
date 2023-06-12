@@ -30,7 +30,8 @@ public class DrawPopulationMenu : MonoBehaviour
     private static GameObject UpdatePrefabByPopulation(IPopulation population)
     {
         var prefabObject = _prefab;
-        prefabObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = population.Name;
+        prefabObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.white;
+        prefabObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = population.Name.ToUpper();
 
         return prefabObject;
     }
@@ -63,5 +64,6 @@ public class DrawPopulationMenu : MonoBehaviour
         
         UpdateCurrentPopulation.CurrentPopulation = population;
         UpdateCurrentPopulation.NeedsUpdatePopulation = true;
+        ButtonsManager.ChangeMenuStatus = true;
     }
 }

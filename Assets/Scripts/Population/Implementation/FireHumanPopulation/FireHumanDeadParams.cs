@@ -4,11 +4,11 @@ namespace Population.Implementation.FireHumanPopulation
 {
     public class FireHumanDeadParams : IPopulationDeadParams
     {
-        public float MinTemperature => 32;
-        public float MaxTemperature => 44;
+        public float MinTemperature => 32.8f;
+        public float MaxTemperature => 44.5f;
 
-        public (float, float) MinArterialPressure => (37, 37);
-        public (float, float) MaxArterialPressure => (147, 97);
+        public (float, float) MinArterialPressure => (100, 60);
+        public (float, float) MaxArterialPressure => (180, 120);
 
         public float MinWaterInBody => 0.45f;
         public float MaxWaterInBody => .75f;

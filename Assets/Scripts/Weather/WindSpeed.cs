@@ -21,7 +21,7 @@
         
         public static float MinValue => 0;
         public static float MaxValue => 80;
-        public static float DefaultValue => 4;
+        public static float DefaultValue => 3;
         public static float Value
         {
             get => _value;

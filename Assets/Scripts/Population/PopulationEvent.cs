@@ -31,6 +31,9 @@ namespace Population
             
             if (Noise.Value >= populationCantBe.MaxNoise)
                 messages.Add($"Шум выше {populationCantBe.MaxNoise}");
+            
+            if (WindSpeed.Value >= populationCantBe.MaxWindSpeed)
+                messages.Add($"Скорость ветра выше {populationCantBe.MaxWindSpeed}");
 
             return messages.Count != 0;
         }

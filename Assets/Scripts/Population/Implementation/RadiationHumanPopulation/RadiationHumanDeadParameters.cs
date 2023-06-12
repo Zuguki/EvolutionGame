@@ -4,8 +4,8 @@ namespace Population.Implementation.RadiationHumanPopulation
 {
     public class RadiationHumanDeadParameters : IPopulationDeadParams
     {
-        public float MinTemperature => 31;
-        public float MaxTemperature => 43;
+        public float MinTemperature => 29.5f;
+        public float MaxTemperature => 42.8f;
 
         public (float, float) MinArterialPressure => (37, 37);
         public (float, float) MaxArterialPressure => (147, 97);

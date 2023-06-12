@@ -15,9 +15,9 @@ public class PopulationCountSetting : MonoBehaviour
         
         populationCount.onEndEdit.AddListener(value =>
         {
-            PopulationCount.Value = value.ToLongDef(PopulationCount.DefaultValue) ?? PopulationCount.DefaultValue;
-            populationCount.text = PopulationCount.Value.ToString();
-            Program.Population.Parameters.Count = PopulationCount.Value;
+            // PopulationCount.Value = null;
+            populationCount.text = value;
+            // Program.Population.Parameters.Count = PopulationCount.Value;
         });
     }
 }

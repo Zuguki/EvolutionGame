@@ -17,9 +17,25 @@ public class WeatherSettingsController : MonoBehaviour
     [SerializeField] private TMP_InputField noiseValue;
     [SerializeField] private TMP_InputField soilPurityValue;
     
+    [SerializeField] private TMP_InputField temperatureValueForUpdate;
+    [SerializeField] private TMP_InputField humidityValueForUpdate;
+    [SerializeField] private TMP_InputField windSpeedValueForUpdate;
+    
+    [SerializeField] private TMP_InputField pressureValueForUpdate;
+    [SerializeField] private TMP_InputField radiationValueForUpdate;
+    [SerializeField] private TMP_InputField preciptiationValueForUpdate;
+    
+    [SerializeField] private TMP_InputField airQualityValueForUpdate;
+    [SerializeField] private TMP_InputField noiseValueForUpdate;
+    [SerializeField] private TMP_InputField soilPurityValueForUpdate;
+
+    [SerializeField] private bool needsReset = false;
+
     public void Start()
     {
-        ResetValues();
+        if (needsReset)
+            ResetValues();
+        
         UpdateTextValues();
         temperatureValue.onEndEdit.AddListener(value => Temperature.Value = value.ToFloatDef(0) ?? 0);
         temperatureValue.onEndEdit.AddListener(_ => UpdateTextValues());
@@ -51,15 +67,50 @@ public class WeatherSettingsController : MonoBehaviour
 
     private void UpdateTextValues()
     {
-        temperatureValue.text = Temperature.Value.ToString(CultureInfo.InvariantCulture);
-        humidityValue.text = Humidity.Value.ToString(CultureInfo.InvariantCulture);
-        windSpeedValue.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture);
-        pressureValue.text = Pressure.Value.ToString(CultureInfo.InvariantCulture);
-        radiationValue.text = Radiation.Value.ToString(CultureInfo.InvariantCulture);
-        preciptiationValue.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture);
-        airQualityValue.text = AirQuality.Value.ToString(CultureInfo.InvariantCulture);
-        noiseValue.text = Noise.Value.ToString(CultureInfo.InvariantCulture);
-        soilPurityValue.text = SoilPurity.Value.ToString(CultureInfo.InvariantCulture);
+        if (needsReset)
+        {
+            temperatureValue.text = Temperature.Value.ToString(CultureInfo.InvariantCulture);
+            humidityValue.text = Humidity.Value.ToString(CultureInfo.InvariantCulture);
+            windSpeedValue.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture);
+            pressureValue.text = Pressure.Value.ToString(CultureInfo.InvariantCulture);
+            radiationValue.text = Radiation.Value.ToString(CultureInfo.InvariantCulture);
+            preciptiationValue.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture);
+            airQualityValue.text = AirQuality.Value.ToString(CultureInfo.InvariantCulture);
+            noiseValue.text = Noise.Value.ToString(CultureInfo.InvariantCulture);
+            soilPurityValue.text = SoilPurity.Value.ToString(CultureInfo.InvariantCulture);
+
+            temperatureValueForUpdate.text = Temperature.Value.ToString(CultureInfo.InvariantCulture) + " °C";
+            humidityValueForUpdate.text = Humidity.Value.ToString(CultureInfo.InvariantCulture) + " %";
+            windSpeedValueForUpdate.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture) + " м/с";
+            pressureValueForUpdate.text = Pressure.Value.ToString(CultureInfo.InvariantCulture) + " мм.рт.ст.";
+            radiationValueForUpdate.text = Radiation.Value.ToString(CultureInfo.InvariantCulture) + " мЗв/д";
+            preciptiationValueForUpdate.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture) + " мм/г";
+            airQualityValueForUpdate.text = AirQuality.Value.ToString(CultureInfo.InvariantCulture) + " AQI";
+            noiseValueForUpdate.text = Noise.Value.ToString(CultureInfo.InvariantCulture) + " дБ";
+            soilPurityValueForUpdate.text = SoilPurity.Value.ToString(CultureInfo.InvariantCulture) + " C";
+        }
+        else
+        {
+            temperatureValue.text = Temperature.Value.ToString(CultureInfo.InvariantCulture) + " °C";
+            humidityValue.text = Humidity.Value.ToString(CultureInfo.InvariantCulture) + " %";
+            windSpeedValue.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture) + " м/с";
+            pressureValue.text = Pressure.Value.ToString(CultureInfo.InvariantCulture) + " мм.рт.ст.";
+            radiationValue.text = Radiation.Value.ToString(CultureInfo.InvariantCulture) + " мЗв/д";
+            preciptiationValue.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture) + " мм/г";
+            airQualityValue.text = AirQuality.Value.ToString(CultureInfo.InvariantCulture) + " AQI";
+            noiseValue.text = Noise.Value.ToString(CultureInfo.InvariantCulture) + " дБ";
+            soilPurityValue.text = SoilPurity.Value.ToString(CultureInfo.InvariantCulture) + " C";
+
+            temperatureValueForUpdate.text = Temperature.Value.ToString(CultureInfo.InvariantCulture);
+            humidityValueForUpdate.text = Humidity.Value.ToString(CultureInfo.InvariantCulture);
+            windSpeedValueForUpdate.text = WindSpeed.Value.ToString(CultureInfo.InvariantCulture);
+            pressureValueForUpdate.text = Pressure.Value.ToString(CultureInfo.InvariantCulture);
+            radiationValueForUpdate.text = Radiation.Value.ToString(CultureInfo.InvariantCulture);
+            preciptiationValueForUpdate.text = Preciptiation.Value.ToString(CultureInfo.InvariantCulture);
+            airQualityValueForUpdate.text = AirQuality.Value.ToString(CultureInfo.InvariantCulture);
+            noiseValueForUpdate.text = Noise.Value.ToString(CultureInfo.InvariantCulture);
+            soilPurityValueForUpdate.text = SoilPurity.Value.ToString(CultureInfo.InvariantCulture);
+        }
     }
 
     private void ResetValues()

@@ -22,7 +22,7 @@
         
         public static float MinValue => 0;
         public static float MaxValue => 500;
-        public static float DefaultValue => 90;
+        public static float DefaultValue => 50;
         public static float Value
         {
             get => _value;

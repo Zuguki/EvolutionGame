@@ -61,6 +61,7 @@ namespace Population.Implementation
             var siastArterialPressure = k * Pressure.Value - kreg;
 
             var diastArterialPressure = (siastArterialPressure - sistAt) / 2f + diastAt;
+            diastArterialPressure = diastArterialPressure < 50 ? siastArterialPressure : diastArterialPressure;
             return (siastArterialPressure, diastArterialPressure);
         }
 
@@ -145,7 +146,8 @@ namespace Population.Implementation
                                            ((Preciptiation.MaxValue - Preciptiation.Value) *
                                             ((SoilPurity.MaxValue - SoilPurity.Value) / SoilPurityCoeff)) /
                                            (float) Math.Pow(RegulationCoeff, 2));
-            
+
+            return r;
             return radiation + (r / daysAlive > comfortWeather.MaxRadiation ? r : 0);
         }
 

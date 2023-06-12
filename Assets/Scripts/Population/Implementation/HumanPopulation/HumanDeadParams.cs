@@ -4,11 +4,11 @@ namespace Population.Implementation.HumanPopulation
 {
     public class HumanDeadParams : IPopulationDeadParams
     {
-        public float MinTemperature => 26;
-        public float MaxTemperature => 42;
+        public float MinTemperature => 26.2f;
+        public float MaxTemperature => 41.8f;
 
-        public (float, float) MinArterialPressure => (100, 60);
-        public (float, float) MaxArterialPressure => (180, 120);
+        public (float, float) MinArterialPressure => (0, 0);
+        public (float, float) MaxArterialPressure => (300, 300);
 
         public float MinWaterInBody => .4f;
         public float MaxWaterInBody => .75f;

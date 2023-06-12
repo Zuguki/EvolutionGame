@@ -15,5 +15,7 @@
         public float MinSoilPurity { get; }
         
         public float MaxNoise { get; }
+        
+        public float MaxWindSpeed { get; }
     }
 }

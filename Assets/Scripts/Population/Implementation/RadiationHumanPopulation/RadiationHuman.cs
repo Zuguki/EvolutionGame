@@ -5,7 +5,7 @@ namespace Population.Implementation.RadiationHumanPopulation
 {
     public class RadiationHuman : IUnionPopulation
     {
-        public string Name => "RadiationHuman";
+        public string Name => "Радиационный человек";
         public IPopulationDescription Description { get; }
         public PopulationParams Parameters { get; }
         public IPopulationSprites Sprites { get; }
@@ -34,10 +34,12 @@ namespace Population.Implementation.RadiationHumanPopulation
         public bool TryOpen(IPopulation currentPopulation, out IPopulation population)
         {
             if (currentPopulation.IsAlive
-                && currentPopulation.Parameters.BodyTemperature > 36.5 && currentPopulation.Parameters.BodyTemperature < 37.5
-                && currentPopulation.Parameters.Radiation is > 500 and < 600
-                && currentPopulation.Parameters.ArterialPressure.Item1 > 140 && currentPopulation.Parameters.ArterialPressure.Item2 > 80
-                && currentPopulation.Parameters.ArterialPressure.Item1 < 160 && currentPopulation.Parameters.ArterialPressure.Item2 < 85)
+                && currentPopulation.Parameters.BodyTemperature >= 35.8 && currentPopulation.Parameters.BodyTemperature <= 38.5
+                && currentPopulation.Parameters.ArterialPressure.Item1 >= 81 && currentPopulation.Parameters.ArterialPressure.Item2 >= 60.5
+                && currentPopulation.Parameters.ArterialPressure.Item1 <= 103 && currentPopulation.Parameters.ArterialPressure.Item2 <= 71.5
+                && currentPopulation.Parameters.WaterInBody >= 0.4 && currentPopulation.Parameters.WaterInBody <= 0.65
+                && currentPopulation.Parameters.BloodInBody >= 4.5 && currentPopulation.Parameters.BloodInBody <= 5
+                && currentPopulation.Parameters.Radiation >= 25000)
             {
                 population = this;
                 return true;

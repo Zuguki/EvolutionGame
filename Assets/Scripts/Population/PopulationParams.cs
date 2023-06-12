@@ -13,6 +13,8 @@ namespace Population
         private float _radiation = 70;
         private float _bloodInBody = 5;
 
+        private int radiationDays = 0;
+
         private readonly IPopulationDeadParams _deadParams;
         private readonly IComfortWeather _comfortWeather;
         private readonly IPopulationCantBe _populationCantBe;
@@ -139,6 +141,9 @@ namespace Population
                     _bloodInBody = value;
             }
         }
+        
+        public float RadiationPerDay { get; set; }
+        
         public int DaysAlive { get; set; }
 
         public long Count { get; set; } = 1_000_000;
@@ -149,7 +154,13 @@ namespace Population
             ArterialPressure = _populationParamsUpdater.GetArterialPressure();
             WaterInBody = _populationParamsUpdater.GetWaterInBody(WaterInBody, _populationSquare, Count);
             BloodInBody = _populationParamsUpdater.GetBloodInBody(this, _deadParams);
-            Radiation = _populationParamsUpdater.GetRadiationInBody(_comfortWeather, Radiation, DaysAlive);
+            var rad = _populationParamsUpdater.GetRadiationInBody(_comfortWeather, Radiation, DaysAlive);
+            if (Weather.Radiation.Value > 0 && Weather.Radiation.Value > _comfortWeather.MaxRadiation)
+            {
+                radiationDays++;
+                RadiationPerDay = (rad + Radiation) / radiationDays;
+                Radiation += rad;
+            }
             Count = _populationParamsUpdater.GetPopulationCount(Count);
             
             PopulationEvent.TryAddDeadMessage(out var list, this, _deadParams);
